@@ -1,3 +1,5 @@
+using BabyNames.Data;
+
 namespace BabyNames;
 
 public class Startup
@@ -12,6 +14,8 @@ public class Startup
 	public void ConfigureServices(IServiceCollection services)
 	{
 		services.AddMvc();
+
+		services.AddSingleton<IBabyNameRepository, BabyNameRepository>();
 	}
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

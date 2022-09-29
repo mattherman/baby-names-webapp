@@ -1,9 +1,9 @@
 using BabyNames;
 
 Host.CreateDefaultBuilder(args)
-    .ConfigureWebHostDefaults(webBuilder =>
-    {
-        webBuilder.UseStartup<Startup>();
-    })
-    .Build()
-    .Run();
+	.ConfigureWebHostDefaults(webBuilder =>
+	{
+		webBuilder.UseStartup<Startup>();
+	})
+	.Build()
+	.Run();

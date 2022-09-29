@@ -4,7 +4,7 @@ To build the client (requires Node.js):
 ```
 cd src/BabyNames/Client
 yarn install
-yarn run webpack
+yarn run build
 ```
 
 To build the server (requires .NET SDK 6.0 or greater):

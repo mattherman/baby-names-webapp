@@ -1,14 +1,14 @@
 {
-  "name": "baby-names",
-  "packageManager": "yarn@3.2.3",
-  "private": true,
-  "scripts": {
-    "build": "webpack",
-    "format": "prettier --write \"**/*.{js,jsx,json,ts,tsx,scss}\""
-  },
-  "devDependencies": {
-    "prettier": "^2.7.1",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
-  }
+	"name": "baby-names",
+	"packageManager": "yarn@3.2.3",
+	"private": true,
+	"scripts": {
+		"build": "webpack",
+		"format": "prettier --write \"**/*.{js,jsx,json,ts,tsx,scss}\""
+	},
+	"devDependencies": {
+		"prettier": "^2.7.1",
+		"webpack": "^5.74.0",
+		"webpack-cli": "^4.10.0"
+	}
 }

@@ -33,6 +33,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["prettier", "npm:2.7.1"],\
             ["webpack", "virtual:77a098f9e5c8fdc0009d9d663cc01485096e981bb9e645a80143be1b20fc340e7214aaf37ca9090f0e627dec283ba110010ec509e45220c3cd39dbf5839af595#npm:5.74.0"],\
             ["webpack-cli", "virtual:77a098f9e5c8fdc0009d9d663cc01485096e981bb9e645a80143be1b20fc340e7214aaf37ca9090f0e627dec283ba110010ec509e45220c3cd39dbf5839af595#npm:4.10.0"]\
           ],\
@@ -500,6 +501,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["baby-names", "workspace:."],\
+            ["prettier", "npm:2.7.1"],\
             ["webpack", "virtual:77a098f9e5c8fdc0009d9d663cc01485096e981bb9e645a80143be1b20fc340e7214aaf37ca9090f0e627dec283ba110010ec509e45220c3cd39dbf5839af595#npm:5.74.0"],\
             ["webpack-cli", "virtual:77a098f9e5c8fdc0009d9d663cc01485096e981bb9e645a80143be1b20fc340e7214aaf37ca9090f0e627dec283ba110010ec509e45220c3cd39dbf5839af595#npm:4.10.0"]\
           ],\
@@ -1005,6 +1007,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["pkg-dir", "npm:4.2.0"],\
             ["find-up", "npm:4.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["prettier", [\
+        ["npm:2.7.1", {\
+          "packageLocation": "./.yarn/cache/prettier-npm-2.7.1-d1f40f5e1a-55a4409182.zip/node_modules/prettier/",\
+          "packageDependencies": [\
+            ["prettier", "npm:2.7.1"]\
           ],\
           "linkType": "HARD"\
         }]\

@@ -20,13 +20,13 @@ The application should be available at http://localhost:8080 and https://localho
 
 ## TODO
 
-[X] Create and configure client-side application
-[X] Create and configure server-side application
-[X] Implement API endpoints with dummy data
-[ ] Update IBabyNameRepository to be backed by a database
-[ ] Add Redux
-[ ] Create skeleton application with planned interactions
-[ ] Style application
-[ ] Add animations
-[ ] Add auth
-[ ] Deployment
+- [X] Create and configure client-side application
+- [X] Create and configure server-side application
+- [X] Implement API endpoints with dummy data
+- [ ] Update IBabyNameRepository to be backed by a database
+- [ ] Add Redux
+- [ ] Create skeleton application with planned interactions
+- [ ] Style application
+- [ ] Add animations
+- [ ] Add auth
+- [ ] Deployment

@@ -6,9 +6,9 @@ namespace BabyNames.Controllers;
 
 [ApiController]
 [Route("/api/baby-names")]
-public class BabyNamesController
+public class BabyNamesController : ControllerBase
 {
-	private IBabyNameRepository _repository;
+	private readonly IBabyNameRepository _repository;
 
 	public BabyNamesController(IBabyNameRepository repository)
 	{
@@ -16,8 +16,23 @@ public class BabyNamesController
 	}
 
 	[HttpGet]
-	public async Task<IEnumerable<BabyName>> GetBabyNames()
+	public async Task<IActionResult> GetBabyNames(NameGender? gender, bool includeCompleted = false)
 	{
-		return await _repository.GetBabyNames(new[] { NameGender.Male });
+		var result = includeCompleted
+			? await _repository.GetBabyNames(gender)
+			: await _repository.GetBabyNamesPendingVote(gender);
+		return Ok(result);
+	}
+
+	[HttpPost("commands/vote")]
+	public async Task<IActionResult> Vote([FromBody] VoteRequest request)
+	{
+		var name = await _repository.GetBabyName(request.Id);
+		if (name is null)
+			return NotFound();
+		if (name.Vote is not null)
+			return BadRequest("A vote has already been submitted for this name");
+		await _repository.Vote(request.Id, request.Vote);
+		return Ok();
 	}
 }

@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"alwaysStrict": true,
+		"esModuleInterop": true,
+		"outDir": "./build/",
+		"sourceMap": false,
+		"noImplicitAny": true,
+		"module": "commonjs",
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noErrorTruncation": true,
+		"moduleResolution": "node",
+		"pretty": true,
+		"target": "ESNext",
+		"jsx": "react",
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["./src/*"]
+		}
+	}
+}

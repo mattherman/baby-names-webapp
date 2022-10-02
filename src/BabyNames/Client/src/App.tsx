@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import NamesPage from './names/NamesPage';
 
 function App() {
 	return (
@@ -17,6 +18,7 @@ function App() {
 					Learn React
 				</a>
 			</header>
+			<NamesPage />
 		</div>
 	);
 }

@@ -3,6 +3,7 @@ const autoprefixer = require('autoprefixer');
 
 const BUILD_DIRECTORY = path.join('..', 'wwwroot', 'scripts');
 const BUILD_DIRECTORY_ABSOLUTE = path.resolve(__dirname, BUILD_DIRECTORY);
+const SRC_DIRECTORY = path.join(__dirname, 'src');
 
 const IS_DEVELOPMENT = process.argv.includes('development');
 
@@ -36,7 +37,12 @@ module.exports = {
 			}
 		],
 	},
-	resolve: { extensions: ['*', '.js', '.jsx', '.ts', '.tsx'] },
+	resolve: {
+		alias: {
+			'~': SRC_DIRECTORY
+		},
+		extensions: ['*', '.js', '.jsx', '.ts', '.tsx']
+	},
 	output: {
 		filename: 'main.js',
 		path: BUILD_DIRECTORY_ABSOLUTE,

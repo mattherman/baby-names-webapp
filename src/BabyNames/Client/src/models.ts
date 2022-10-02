@@ -1,11 +1,11 @@
 export enum NameGender {
 	Male = 0,
-	Female = 1
+	Female = 1,
 }
 
 export enum Vote {
 	Nay = 0,
-	Yea = 1
+	Yea = 1,
 }
 
 export interface IBabyName {

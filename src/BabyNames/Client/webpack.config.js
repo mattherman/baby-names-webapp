@@ -11,9 +11,9 @@ const postCSSLoader = {
 	loader: 'postcss-loader',
 	options: {
 		postcssOptions: {
-			plugins: [autoprefixer()]
-		}
-	}
+			plugins: [autoprefixer()],
+		},
+	},
 };
 
 module.exports = {
@@ -24,28 +24,28 @@ module.exports = {
 			{
 				test: /\.(ts|tsx)$/,
 				loader: 'babel-loader',
-				options: { presets: ['@babel/preset-typescript'] }
+				options: { presets: ['@babel/preset-typescript'] },
 			},
 			{
 				test: /\.(js|jsx)$/,
 				loader: 'babel-loader',
-				options: { presets: ['@babel/env'] }
+				options: { presets: ['@babel/env'] },
 			},
 			{
 				test: /\.css$/,
-				use: ['style-loader', 'css-loader', postCSSLoader]
-			}
+				use: ['style-loader', 'css-loader', postCSSLoader],
+			},
 		],
 	},
 	resolve: {
 		alias: {
-			'~': SRC_DIRECTORY
+			'~': SRC_DIRECTORY,
 		},
-		extensions: ['*', '.js', '.jsx', '.ts', '.tsx']
+		extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
 	},
 	output: {
 		filename: 'main.js',
 		path: BUILD_DIRECTORY_ABSOLUTE,
 		publicPath: '/scripts/',
-	}
+	},
 };

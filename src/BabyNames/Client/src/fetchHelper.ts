@@ -25,9 +25,9 @@ export async function get<T>(request: IRequest) {
 		method: method ?? 'GET',
 		headers: {
 			accept: 'application/json',
-			contentType: body ? 'application/json' : undefined
+			contentType: body ? 'application/json' : undefined,
 		},
-		body: body ? JSON.stringify(body) : undefined
+		body: body ? JSON.stringify(body) : undefined,
 	});
 	checkStatus(response, uri);
 	return (await response.json()) as T;

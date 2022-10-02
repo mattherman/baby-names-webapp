@@ -14,12 +14,14 @@ function NamesPage() {
 	useEffect(() => {
 		getRemainingBabyNames(NameGender.Male);
 	}, []);
-	const remainingNames = useAppSelector(state => state.names.remainingNames);
+	const remainingNames = useAppSelector((state) => state.names.remainingNames);
 	return (
 		<>
 			<div>Names</div>
 			<ul>
-				{ remainingNames.map(name => <li key={name.id}>{name.name}</li>) }
+				{remainingNames.map((name) => (
+					<li key={name.id}>{name.name}</li>
+				))}
 			</ul>
 		</>
 	);

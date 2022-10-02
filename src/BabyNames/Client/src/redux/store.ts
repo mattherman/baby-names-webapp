@@ -4,6 +4,6 @@ import { rootReducer } from './rootReducer';
 
 export function createStore() {
 	return configureStore<IState>({
-		reducer: rootReducer
+		reducer: rootReducer,
 	});
 }

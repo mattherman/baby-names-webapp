@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getRemainingBabyNames } from "./names.actions";
-import { IBabyName } from "~/models";
+import { getRemainingBabyNames } from './names.actions';
+import { IBabyName } from '~/models';
 
 export interface IBabyNamesState {
 	isLoading: boolean;
@@ -13,14 +13,14 @@ const initialState: IBabyNamesState = {
 	isLoading: false,
 	hasError: false,
 	remainingNames: [],
-	currentName: null
+	currentName: null,
 };
 
 const slice = createSlice({
 	name: 'names',
 	initialState,
 	reducers: {},
-	extraReducers: builder =>
+	extraReducers: (builder) =>
 		builder
 			.addCase(getRemainingBabyNames.pending, (state) => {
 				state.isLoading = true;
@@ -35,13 +35,13 @@ const slice = createSlice({
 			.addCase(getRemainingBabyNames.rejected, (state) => {
 				state.isLoading = false;
 				state.hasError = true;
-			})
+			}),
 });
 
 export default {
 	...slice,
 	actions: {
 		...slice.actions,
-		getRemainingBabyNames
-	}
-}
+		getRemainingBabyNames,
+	},
+};

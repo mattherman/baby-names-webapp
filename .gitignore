@@ -12,6 +12,7 @@
 # Client
 
 **/wwwroot/scripts/*
+**/node_modules/
 
 .yarn/*
 !.yarn/patches

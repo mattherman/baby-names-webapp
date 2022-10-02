@@ -14,3 +14,8 @@ export interface IBabyName {
 	gender: NameGender;
 	vote: Vote;
 }
+
+export interface VoteRequest {
+	id: number;
+	vote: Vote;
+}

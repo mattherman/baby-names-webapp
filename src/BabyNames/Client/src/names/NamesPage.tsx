@@ -1,27 +1,41 @@
 import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import namesSlice from './names.slice';
-import { NameGender } from '~/models';
+import { NameGender, Vote } from '~/models';
 import { useAppDispatch, useAppSelector } from '~/redux';
 
 function NamesPage() {
 	const dispatch = useAppDispatch();
-	const { getRemainingBabyNames } = bindActionCreators(
+	const { getRemainingBabyNames, submitVote } = bindActionCreators(
 		namesSlice.actions,
 		dispatch
 	);
 	useEffect(() => {
 		getRemainingBabyNames(NameGender.Male);
 	}, []);
-	const remainingNames = useAppSelector((state) => state.names.remainingNames);
+	const { currentName, isLoading } = useAppSelector((state) => state.names);
+
+	if (isLoading) {
+		return (
+			<div>Loading...</div>
+		);
+	};
+
+	if (currentName === null) {
+		return (
+			<div>All done!</div>
+		);
+	}
+
+	const createVoteClickHandler = (vote: Vote) => () => {
+		submitVote({ id: currentName.id, vote: vote });
+	}
+
 	return (
 		<>
-			<div>Names</div>
-			<ul>
-				{remainingNames.map((name) => (
-					<li key={name.id}>{name.name}</li>
-				))}
-			</ul>
+			<h1>{currentName.name}</h1>
+			<button onClick={createVoteClickHandler(Vote.Nay)}>No</button>
+			<button onClick={createVoteClickHandler(Vote.Yea)}>Yes</button>
 		</>
 	);
 }

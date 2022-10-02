@@ -1,5 +1,5 @@
-import { get } from '~/fetchHelper';
-import { IBabyName, NameGender } from '~/models';
+import { get, send } from '~/fetchHelper';
+import { IBabyName, NameGender, VoteRequest } from '~/models';
 
 export async function getBabyNames(
 	gender?: NameGender,
@@ -10,5 +10,12 @@ export async function getBabyNames(
 	return await get<IBabyName[]>({
 		uri: '/api/baby-names',
 		query,
+	});
+}
+
+export async function submitVote(request: VoteRequest) {
+	await send({
+		uri: '/api/baby-names/commands/vote',
+		body: request
 	});
 }

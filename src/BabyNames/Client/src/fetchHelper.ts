@@ -24,11 +24,23 @@ export async function get<T>(request: IRequest) {
 	const response = await fetch(formatUri(uri, query), {
 		method: method ?? 'GET',
 		headers: {
-			accept: 'application/json',
-			contentType: body ? 'application/json' : undefined,
+			'Accept': 'application/json',
+			'Content-Type': body ? 'application/json' : undefined,
 		},
 		body: body ? JSON.stringify(body) : undefined,
 	});
 	checkStatus(response, uri);
 	return (await response.json()) as T;
+}
+
+export async function send(request: IRequest) {
+	const { uri, method, query, body } = request;
+	const response = await fetch(formatUri(uri, query), {
+		method: method ?? 'POST',
+		headers: {
+			'Content-Type': body ? 'application/json' : undefined,
+		},
+		body: body ? JSON.stringify(body) : undefined,
+	});
+	checkStatus(response, uri);
 }

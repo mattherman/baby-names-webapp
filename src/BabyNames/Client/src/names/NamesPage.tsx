@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
-import { useDispatch } from 'react-redux';
 import namesSlice from './names.slice';
 import { NameGender } from '~/models';
-import { useAppSelector } from '~/redux';
+import { useAppDispatch, useAppSelector } from '~/redux';
 
 function NamesPage() {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const { getRemainingBabyNames } = bindActionCreators(
 		namesSlice.actions,
 		dispatch

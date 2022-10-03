@@ -18,6 +18,7 @@ const cssModulesLoader = {
 				? '[name]_[local]_[hash:base64:3]'
 				: '[hash:base64:4]',
 		},
+		sourceMap: IS_DEVELOPMENT,
 	},
 };
 
@@ -73,4 +74,5 @@ module.exports = {
 			failOnWarning: TREAT_WARNINGS_AS_ERRORS,
 		}),
 	],
+	devtool: 'source-map',
 };

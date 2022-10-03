@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import votingSlice from './voting.slice';
 import { NameGender, Vote } from '~/models';
 import { useAppDispatch, useAppSelector } from '~/redux';
+import { NameCard } from './NameCard';
+import './VotingPage.css';
 
 function VotingPage() {
 	const dispatch = useAppDispatch();
@@ -29,9 +31,17 @@ function VotingPage() {
 
 	return (
 		<>
-			<h1>{currentName.name}</h1>
-			<button onClick={createVoteClickHandler(Vote.Nay)}>No</button>
-			<button onClick={createVoteClickHandler(Vote.Yea)}>Yes</button>
+			<div className="container">
+				<NameCard name={currentName} />
+				<div className="buttons">
+					<button className="nay" onClick={createVoteClickHandler(Vote.Nay)}>
+						No
+					</button>
+					<button className="yea" onClick={createVoteClickHandler(Vote.Yea)}>
+						Yes
+					</button>
+				</div>
+			</div>
 		</>
 	);
 }

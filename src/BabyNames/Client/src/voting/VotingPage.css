@@ -1,0 +1,29 @@
+.container {
+	width: 75%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: auto;
+	text-align: center;
+}
+
+.buttons {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	gap: 1rem;
+}
+
+.buttons button {
+	flex-grow: 1;
+	height: 3rem;
+}
+
+.yea {
+	/* background-color: green; */
+}
+
+.nay {
+	/* background-color: red; */
+}

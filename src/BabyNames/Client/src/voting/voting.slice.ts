@@ -31,7 +31,7 @@ const slice = createSlice({
 			.addCase(getRemainingBabyNames.fulfilled, (state, action) => {
 				state.isLoading = false;
 				const names = action.payload;
-				if (state.remainingNames.length > 0) {
+				if (names.length > 0) {
 					state.currentName = names[0];
 					state.remainingNames = names.slice(1);
 				}

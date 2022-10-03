@@ -6,14 +6,18 @@ import { useAppDispatch, useAppSelector } from '~/redux';
 import { NameCard } from './NameCard';
 import styles from './VotingPage.css';
 
-function VotingPage() {
+export interface IVotingPageProps {
+	gender: NameGender;
+}
+
+function VotingPage({ gender }: IVotingPageProps) {
 	const dispatch = useAppDispatch();
 	const { getRemainingBabyNames, submitVote } = bindActionCreators(
 		votingSlice.actions,
 		dispatch
 	);
 	useEffect(() => {
-		getRemainingBabyNames(NameGender.Male);
+		getRemainingBabyNames(gender);
 	}, []);
 	const { currentName, isLoading } = useAppSelector((state) => state.voting);
 

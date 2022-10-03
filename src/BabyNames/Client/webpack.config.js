@@ -1,11 +1,14 @@
 const path = require('path');
 const autoprefixer = require('autoprefixer');
+const EsLintPlugin = require('eslint-webpack-plugin');
 
 const BUILD_DIRECTORY = path.join('..', 'wwwroot', 'scripts');
 const BUILD_DIRECTORY_ABSOLUTE = path.resolve(__dirname, BUILD_DIRECTORY);
 const SRC_DIRECTORY = path.join(__dirname, 'src');
 
 const IS_DEVELOPMENT = process.argv.includes('development');
+
+const TREAT_WARNINGS_AS_ERRORS = !process.argv.includes('--watch');
 
 const cssModulesLoader = {
 	loader: 'css-loader',
@@ -63,4 +66,11 @@ module.exports = {
 		path: BUILD_DIRECTORY_ABSOLUTE,
 		publicPath: '/scripts/',
 	},
+	plugins: [
+		new EsLintPlugin({
+			extensions: ['ts', 'tsx'],
+			exclude: 'node_modules',
+			failOnWarning: TREAT_WARNINGS_AS_ERRORS,
+		}),
+	],
 };

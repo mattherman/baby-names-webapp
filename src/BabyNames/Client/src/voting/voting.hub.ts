@@ -3,9 +3,9 @@ import { IBabyName, NameGender, VoteRequest } from '~/models';
 
 export async function getBabyNames(
 	gender?: NameGender,
-	includeCompleted: boolean = false
+	includeCompleted = false
 ) {
-	var query =
+	const query =
 		gender == null ? { includeCompleted } : { gender, includeCompleted };
 	return await get<IBabyName[]>({
 		uri: '/api/baby-names',
@@ -16,6 +16,6 @@ export async function getBabyNames(
 export async function submitVote(request: VoteRequest) {
 	await send({
 		uri: '/api/baby-names/commands/vote',
-		body: request
+		body: request,
 	});
 }

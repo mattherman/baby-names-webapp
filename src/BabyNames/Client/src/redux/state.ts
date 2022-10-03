@@ -1,5 +1,5 @@
-import { IBabyNamesState } from '~/names/names.slice';
+import { IVotingState } from '~/voting/voting.slice';
 
 export interface IState {
-	names: IBabyNamesState;
+	voting: IVotingState;
 }

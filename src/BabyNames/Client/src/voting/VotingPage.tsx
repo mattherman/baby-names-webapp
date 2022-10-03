@@ -1,35 +1,31 @@
 import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
-import namesSlice from './names.slice';
+import votingSlice from './voting.slice';
 import { NameGender, Vote } from '~/models';
 import { useAppDispatch, useAppSelector } from '~/redux';
 
-function NamesPage() {
+function VotingPage() {
 	const dispatch = useAppDispatch();
 	const { getRemainingBabyNames, submitVote } = bindActionCreators(
-		namesSlice.actions,
+		votingSlice.actions,
 		dispatch
 	);
 	useEffect(() => {
 		getRemainingBabyNames(NameGender.Male);
 	}, []);
-	const { currentName, isLoading } = useAppSelector((state) => state.names);
+	const { currentName, isLoading } = useAppSelector((state) => state.voting);
 
 	if (isLoading) {
-		return (
-			<div>Loading...</div>
-		);
-	};
+		return <div>Loading...</div>;
+	}
 
 	if (currentName === null) {
-		return (
-			<div>All done!</div>
-		);
+		return <div>All done!</div>;
 	}
 
 	const createVoteClickHandler = (vote: Vote) => () => {
 		submitVote({ id: currentName.id, vote: vote });
-	}
+	};
 
 	return (
 		<>
@@ -40,4 +36,4 @@ function NamesPage() {
 	);
 }
 
-export default NamesPage;
+export default VotingPage;

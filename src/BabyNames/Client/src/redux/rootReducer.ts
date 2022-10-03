@@ -1,5 +1,5 @@
-import namesSlice from '~/names/names.slice';
+import votingSlice from '~/voting/voting.slice';
 
 export const rootReducer = {
-	[namesSlice.name]: namesSlice.reducer,
+	[votingSlice.name]: votingSlice.reducer,
 };

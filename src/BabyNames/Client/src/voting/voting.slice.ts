@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getRemainingBabyNames, submitVote } from './names.actions';
+import { getRemainingBabyNames, submitVote } from './voting.actions';
 import { IBabyName } from '~/models';
 
-export interface IBabyNamesState {
+export interface IVotingState {
 	isLoading: boolean;
 	hasError: boolean;
 	remainingNames: IBabyName[];
 	currentName: IBabyName;
 }
 
-const initialState: IBabyNamesState = {
+const initialState: IVotingState = {
 	isLoading: false,
 	hasError: false,
 	remainingNames: [],
@@ -17,7 +17,7 @@ const initialState: IBabyNamesState = {
 };
 
 const slice = createSlice({
-	name: 'names',
+	name: 'voting',
 	initialState,
 	reducers: {},
 	extraReducers: (builder) =>
@@ -31,8 +31,10 @@ const slice = createSlice({
 			.addCase(getRemainingBabyNames.fulfilled, (state, action) => {
 				state.isLoading = false;
 				const names = action.payload;
-				state.currentName = names[0];
-				state.remainingNames = names.slice(1);
+				if (state.remainingNames.length > 0) {
+					state.currentName = names[0];
+					state.remainingNames = names.slice(1);
+				}
 			})
 			.addCase(getRemainingBabyNames.rejected, (state) => {
 				state.isLoading = false;
@@ -54,7 +56,7 @@ const slice = createSlice({
 			.addCase(submitVote.rejected, (state) => {
 				state.isLoading = false;
 				state.hasError = true;
-			})
+			}),
 });
 
 export default {

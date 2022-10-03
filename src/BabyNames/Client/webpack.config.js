@@ -7,6 +7,17 @@ const SRC_DIRECTORY = path.join(__dirname, 'src');
 
 const IS_DEVELOPMENT = process.argv.includes('development');
 
+const cssModulesLoader = {
+	loader: 'css-loader',
+	options: {
+		modules: {
+			localIdentName: IS_DEVELOPMENT
+				? '[name]_[local]_[hash:base64:3]'
+				: '[hash:base64:4]',
+		},
+	},
+};
+
 const postCSSLoader = {
 	loader: 'postcss-loader',
 	options: {
@@ -22,18 +33,22 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(ts|tsx)$/,
-				loader: 'babel-loader',
-				options: { presets: ['@babel/preset-typescript'] },
-			},
-			{
-				test: /\.(js|jsx)$/,
-				loader: 'babel-loader',
-				options: { presets: ['@babel/env'] },
-			},
-			{
-				test: /\.css$/,
-				use: ['style-loader', 'css-loader', postCSSLoader],
+				oneOf: [
+					{
+						test: /\.(ts|tsx)$/,
+						loader: 'babel-loader',
+						options: { presets: ['@babel/preset-typescript'] },
+					},
+					{
+						test: /\.(js|jsx)$/,
+						loader: 'babel-loader',
+						options: { presets: ['@babel/env'] },
+					},
+					{
+						test: /\.css$/,
+						use: ['style-loader', cssModulesLoader, postCSSLoader],
+					},
+				],
 			},
 		],
 	},

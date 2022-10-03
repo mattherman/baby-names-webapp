@@ -1,11 +1,12 @@
 import React from 'react';
 import { IBabyName } from '~/models';
-import './NameCard.css';
+import cx from 'classnames';
+import styles from './NameCard.css';
 
 export interface INameCardProps {
 	name: IBabyName;
 }
 
 export function NameCard({ name }: INameCardProps) {
-	return <div className="root blue">{name.name}</div>;
+	return <div className={cx(styles.root, styles.blue)}>{name.name}</div>;
 }

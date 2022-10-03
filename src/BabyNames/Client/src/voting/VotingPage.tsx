@@ -4,7 +4,7 @@ import votingSlice from './voting.slice';
 import { NameGender, Vote } from '~/models';
 import { useAppDispatch, useAppSelector } from '~/redux';
 import { NameCard } from './NameCard';
-import './VotingPage.css';
+import styles from './VotingPage.css';
 
 function VotingPage() {
 	const dispatch = useAppDispatch();
@@ -31,13 +31,19 @@ function VotingPage() {
 
 	return (
 		<>
-			<div className="container">
+			<div className={styles.container}>
 				<NameCard name={currentName} />
-				<div className="buttons">
-					<button className="nay" onClick={createVoteClickHandler(Vote.Nay)}>
+				<div className={styles.buttons}>
+					<button
+						className={styles.nay}
+						onClick={createVoteClickHandler(Vote.Nay)}
+					>
 						No
 					</button>
-					<button className="yea" onClick={createVoteClickHandler(Vote.Yea)}>
+					<button
+						className={styles.yea}
+						onClick={createVoteClickHandler(Vote.Yea)}
+					>
 						Yes
 					</button>
 				</div>

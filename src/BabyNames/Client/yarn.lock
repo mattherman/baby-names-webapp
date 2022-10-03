@@ -2156,6 +2156,7 @@ __metadata:
     "@yarnpkg/sdks": ^3.0.0-rc.22
     autoprefixer: ^10.4.12
     babel-loader: ^8.2.5
+    classnames: ^2.3.2
     css-loader: ^6.7.1
     postcss: ^8.4.16
     postcss-loader: ^7.0.1
@@ -2307,6 +2308,13 @@ __metadata:
   version: 3.4.0
   resolution: "ci-info@npm:3.4.0"
   checksum: 7f660730170a6ce248e173b670587a0c583e31526d21afcd21f77c811c1aaeb8926999081542d1f30e12cce1df582d4c88709fa45f44c00498b46bdf21d4d21a
+  languageName: node
+  linkType: hard
+
+"classnames@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "classnames@npm:2.3.2"
+  checksum: 2c62199789618d95545c872787137262e741f9db13328e216b093eea91c85ef2bfb152c1f9e63027204e2559a006a92eb74147d46c800a9f96297ae1d9f96f4e
   languageName: node
   linkType: hard
 

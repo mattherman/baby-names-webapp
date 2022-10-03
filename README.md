@@ -24,7 +24,7 @@ The application should be available at http://localhost:8080 and https://localho
 - [X] Create and configure server-side application
 - [X] Implement API endpoints with dummy data
 - [ ] Update API to be backed by a database
-- [ ] Add Redux
+- [X] Add Redux
 - [ ] Create skeleton application with planned interactions
 - [ ] Style application
 - [ ] Add animations

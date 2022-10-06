@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{241A7558-4CF8-4481-9686-C360AA6EABE7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BabyNames", "src\BabyNames\BabyNames.csproj", "{C405682B-7D58-43B3-A16A-1D82B558949C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3E7E31D1-B39B-4993-A485-64315A0ADA06}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BabyNames.Database", "src\BabyNames.Database\BabyNames.Database.csproj", "{BEBA286E-00B2-454E-9655-43DC3F0AB364}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BabyNames", "src\BabyNames\BabyNames.csproj", "{F54FF0BA-563B-4974-9D9C-49FA265C24AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,12 +21,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C405682B-7D58-43B3-A16A-1D82B558949C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C405682B-7D58-43B3-A16A-1D82B558949C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C405682B-7D58-43B3-A16A-1D82B558949C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C405682B-7D58-43B3-A16A-1D82B558949C}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C405682B-7D58-43B3-A16A-1D82B558949C} = {241A7558-4CF8-4481-9686-C360AA6EABE7}
+		{BEBA286E-00B2-454E-9655-43DC3F0AB364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEBA286E-00B2-454E-9655-43DC3F0AB364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEBA286E-00B2-454E-9655-43DC3F0AB364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEBA286E-00B2-454E-9655-43DC3F0AB364}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F54FF0BA-563B-4974-9D9C-49FA265C24AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F54FF0BA-563B-4974-9D9C-49FA265C24AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F54FF0BA-563B-4974-9D9C-49FA265C24AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F54FF0BA-563B-4974-9D9C-49FA265C24AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

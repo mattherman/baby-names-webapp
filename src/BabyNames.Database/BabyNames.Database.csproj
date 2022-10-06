@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup-sqlite" Version="4.6.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\001 - CreateInitialSchema.sql" />
+    <EmbeddedResource Include="Scripts\001 - CreateInitialSchema.sql" />
+    <None Remove="Scripts\002 - AddNames.sql" />
+    <EmbeddedResource Include="Scripts\002 - AddNames.sql" />
+  </ItemGroup>
+
+</Project>

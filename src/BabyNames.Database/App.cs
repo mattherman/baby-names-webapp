@@ -37,6 +37,18 @@ public class App
 			return -1;
 		}
 
+		if (_options.DatabaseFile is null)
+		{
+			Console.WriteLine("The DATABASE__DATABASEFILE environment variable must be specified.");
+			return -1;
+		}
+
+		Console.WriteLine($"Running migrations against {_options.DatabaseFile}");
+		if (!File.Exists(_options.DatabaseFile))
+		{
+			Console.WriteLine("The specified database file does not exist and will be created");
+		}
+
 		var connectionStringBuilder = new SqliteConnectionStringBuilder
 		{
 			DataSource = _options.DatabaseFile, ForeignKeys = true
@@ -70,20 +82,15 @@ public class App
 			.Build();
 	}
 
-	private static void PlanUpgrade(string connectionString)
+	private void PlanUpgrade(string connectionString)
 	{
 		var engine = BuildUpgradeEngine(connectionString);
-
 		var scriptsThatWillRun = engine.GetScriptsToExecute();
-
-		Console.WriteLine("The following scripts will be executed when the migration is ran in execute mode:");
-		foreach (var script in scriptsThatWillRun)
-		{
-			Console.WriteLine(script.Name);
-		}
+		var scriptNames = string.Join('\n', scriptsThatWillRun.Select(s => s.Name));
+		Console.WriteLine($"The following scripts will be executed when the migration is ran in execute mode: {scriptNames}");
 	}
 
-	private static bool RunUpgrade(string connectionString)
+	private bool RunUpgrade(string connectionString)
 	{
 		var engine = BuildUpgradeEngine(connectionString);
 

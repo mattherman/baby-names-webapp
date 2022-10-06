@@ -10,7 +10,6 @@ var host = Host.CreateDefaultBuilder(args)
 	{
 		var configuration = new ConfigurationBuilder()
 			.SetBasePath(Directory.GetCurrentDirectory())
-			.AddJsonFile("appsettings.json")
 			.AddEnvironmentVariables()
 			.Build();
 		services.Configure<DatabaseOptions>(configuration.GetSection("Database"));
@@ -20,4 +19,4 @@ var host = Host.CreateDefaultBuilder(args)
 
 var app = host.Services.GetRequiredService<App>();
 
-app.Run(args);
+return app.Run(args);

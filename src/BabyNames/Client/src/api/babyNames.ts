@@ -1,4 +1,4 @@
-import { get, send } from '~/fetchHelper';
+import { get, send } from './fetchHelper';
 import { IBabyName, NameGender, VoteRequest } from '~/models';
 
 export async function getBabyNames(

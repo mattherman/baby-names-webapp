@@ -24,7 +24,7 @@ export async function get<T>(request: IRequest) {
 	const response = await fetch(formatUri(uri, query), {
 		method: method ?? 'GET',
 		headers: {
-			'Accept': 'application/json',
+			Accept: 'application/json',
 			'Content-Type': body ? 'application/json' : undefined,
 		},
 		body: body ? JSON.stringify(body) : undefined,

@@ -2,6 +2,7 @@ using BabyNames.Models;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using BabyNames.Data.Queries;
+using Microsoft.Extensions.Options;
 
 namespace BabyNames.Data;
 
@@ -15,16 +16,16 @@ public interface IBabyNameRepository
 
 public class BabyNameRepository : IBabyNameRepository
 {
-	private string ConnectionString { get; }
+	private readonly string _connectionString;
 
-	public BabyNameRepository()
+	public BabyNameRepository(IOptions<DatabaseOptions> databaseOptions)
 	{
-		ConnectionString = "Data Source=/home/matt/Development/baby-names-webapp/BabyNames.db;";
+		_connectionString = $"Data Source={databaseOptions.Value.DatabaseFile};";
 	}
 
 	public async Task<IEnumerable<BabyName>> GetBabyNamesByUser(NameGender? gender)
 	{
-		await using var connection = new SqliteConnection(ConnectionString);
+		await using var connection = new SqliteConnection(_connectionString);
 		await connection.OpenAsync();
 		var results = await connection.QueryAsync<BabyName>(
 			Query.GetBabyNamesByUser,
@@ -34,7 +35,7 @@ public class BabyNameRepository : IBabyNameRepository
 
 	public async Task<IEnumerable<BabyName>> GetBabyNamesByUserPendingVote(NameGender? gender)
 	{
-		await using var connection = new SqliteConnection(ConnectionString);
+		await using var connection = new SqliteConnection(_connectionString);
 		await connection.OpenAsync();
 		var results = await connection.QueryAsync<BabyName>(
 			Query.GetBabyNamesByUserPendingVote,
@@ -44,7 +45,7 @@ public class BabyNameRepository : IBabyNameRepository
 
 	public async Task<BabyName?> GetBabyName(int id)
 	{
-		await using var connection = new SqliteConnection(ConnectionString);
+		await using var connection = new SqliteConnection(_connectionString);
 		await connection.OpenAsync();
 		return await connection.QueryFirstOrDefaultAsync<BabyName>(
 			Query.GetBabyName,
@@ -53,7 +54,7 @@ public class BabyNameRepository : IBabyNameRepository
 
 	public async Task Vote(int id, Vote vote)
 	{
-		await using var connection = new SqliteConnection(ConnectionString);
+		await using var connection = new SqliteConnection(_connectionString);
 		await connection.OpenAsync();
 		await connection.ExecuteAsync(
 			Query.CastVote,

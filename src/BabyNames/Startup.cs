@@ -15,6 +15,8 @@ public class Startup
 	{
 		services.AddMvc();
 
+		services.Configure<DatabaseOptions>(_configuration.GetSection("Database"));
+
 		services.AddSingleton<IBabyNameRepository, BabyNameRepository>();
 	}
 

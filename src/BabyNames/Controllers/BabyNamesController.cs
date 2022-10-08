@@ -19,8 +19,8 @@ public class BabyNamesController : ControllerBase
 	public async Task<IActionResult> GetBabyNames(NameGender? gender, bool includeCompleted = false)
 	{
 		var result = includeCompleted
-			? await _repository.GetBabyNames(gender)
-			: await _repository.GetBabyNamesPendingVote(gender);
+			? await _repository.GetBabyNamesByUser(gender)
+			: await _repository.GetBabyNamesByUserPendingVote(gender);
 		return Ok(result);
 	}
 

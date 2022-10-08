@@ -6,4 +6,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Data\Queries\GetBabyNamesByUser.sql" />
+    <EmbeddedResource Include="Data\Queries\GetBabyNamesByUser.sql" />
+    <None Remove="Data\Queries\GetBabyNamesByUserPendingVote.sql" />
+    <EmbeddedResource Include="Data\Queries\GetBabyNamesByUserPendingVote.sql" />
+    <None Remove="Data\Queries\GetBabyName.sql" />
+    <EmbeddedResource Include="Data\Queries\GetBabyName.sql" />
+    <None Remove="Data\Queries\CastVote.sql" />
+    <EmbeddedResource Include="Data\Queries\CastVote.sql" />
+  </ItemGroup>
+
 </Project>

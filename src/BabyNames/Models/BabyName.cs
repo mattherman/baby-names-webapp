@@ -2,6 +2,8 @@ namespace BabyNames.Models;
 
 public class BabyName
 {
+	private BabyName() { }
+
 	public BabyName(int id, string name, NameGender gender, Vote? vote = null)
 	{
 		Id = id;
@@ -11,7 +13,7 @@ public class BabyName
 	}
 
 	public int Id { get; }
-	public string Name { get; }
+	public string Name { get; } = "";
 	public NameGender Gender { get; }
 	public Vote? Vote { get; set; }
 }

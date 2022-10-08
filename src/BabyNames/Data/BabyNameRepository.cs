@@ -1,51 +1,62 @@
 using BabyNames.Models;
+using Dapper;
+using Microsoft.Data.Sqlite;
+using BabyNames.Data.Queries;
 
 namespace BabyNames.Data;
 
 public interface IBabyNameRepository
 {
-	Task<IEnumerable<BabyName>> GetBabyNames(NameGender? gender);
-	Task<IEnumerable<BabyName>> GetBabyNamesPendingVote(NameGender? gender);
+	Task<IEnumerable<BabyName>> GetBabyNamesByUser(NameGender? gender);
+	Task<IEnumerable<BabyName>> GetBabyNamesByUserPendingVote(NameGender? gender);
 	Task<BabyName?> GetBabyName(int id);
 	Task Vote(int id, Vote vote);
 }
 
 public class BabyNameRepository : IBabyNameRepository
 {
-	private readonly IEnumerable<BabyName> _names = new[]
-	{
-		new BabyName(1, "Matthew", NameGender.Male),
-		new BabyName(2, "Ashtyn", NameGender.Female),
-		new BabyName(3, "Sam", NameGender.Male),
-		new BabyName(4, "Sam", NameGender.Female),
-	};
+	private string ConnectionString { get; }
 
-	public async Task<IEnumerable<BabyName>> GetBabyNames(NameGender? gender)
+	public BabyNameRepository()
 	{
-		var result =
-			gender.HasValue ? _names.Where(name => name.Gender == gender) : _names;
-		return await Task.FromResult(result);
+		ConnectionString = "Data Source=/home/matt/Development/baby-names-webapp/BabyNames.db;";
 	}
 
-	public async Task<IEnumerable<BabyName>> GetBabyNamesPendingVote(NameGender? gender)
+	public async Task<IEnumerable<BabyName>> GetBabyNamesByUser(NameGender? gender)
 	{
-		var matchingGender =
-			gender.HasValue ? _names.Where(name => name.Gender == gender) : _names;
-		var pendingVote = matchingGender.Where(name => name.Vote is null);
-		return await Task.FromResult(pendingVote);
+		await using var connection = new SqliteConnection(ConnectionString);
+		await connection.OpenAsync();
+		var results = await connection.QueryAsync<BabyName>(
+			Query.GetBabyNamesByUser,
+			new { UserId = 1, Gender = gender?.ToString() });
+		return results ?? Enumerable.Empty<BabyName>();
+	}
+
+	public async Task<IEnumerable<BabyName>> GetBabyNamesByUserPendingVote(NameGender? gender)
+	{
+		await using var connection = new SqliteConnection(ConnectionString);
+		await connection.OpenAsync();
+		var results = await connection.QueryAsync<BabyName>(
+			Query.GetBabyNamesByUserPendingVote,
+			new { UserId = 1, Gender = gender?.ToString() });
+		return results ?? Enumerable.Empty<BabyName>();
 	}
 
 	public async Task<BabyName?> GetBabyName(int id)
 	{
-		var result = _names.FirstOrDefault(name => name.Id == id);
-		return await Task.FromResult(result);
+		await using var connection = new SqliteConnection(ConnectionString);
+		await connection.OpenAsync();
+		return await connection.QueryFirstOrDefaultAsync<BabyName>(
+			Query.GetBabyName,
+			new { UserId = 1, NameId = id });
 	}
 
 	public async Task Vote(int id, Vote vote)
 	{
-		var name = _names.FirstOrDefault(name => name.Id == id);
-		if (name is null) return;
-		name.Vote = vote;
-		await Task.CompletedTask;
+		await using var connection = new SqliteConnection(ConnectionString);
+		await connection.OpenAsync();
+		await connection.ExecuteAsync(
+			Query.CastVote,
+			new { UserId = 1, NameId = id, Vote = (int)vote });
 	}
 }

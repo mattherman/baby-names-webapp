@@ -2,6 +2,7 @@
 
 .vscode/
 .idea/
+*.DotSettings.user
 *.log
 BabyNames.db
 

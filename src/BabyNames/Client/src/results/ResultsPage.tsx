@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
+import LoadingSpinner from '~/components/LoadingSpinner';
 import { NameGender, Vote } from '~/models';
 import { useAppDispatch, useAppSelector } from '~/redux';
 import ResultRow from './ResultRow';
 import resultsSlice from './results.slice';
+import styles from './ResultsPage.css';
 
 function ResultsPage() {
 	const dispatch = useAppDispatch();
@@ -24,7 +26,7 @@ function ResultsPage() {
 	);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingSpinner />;
 	}
 
 	const filteredNames = showRejectedNames
@@ -32,12 +34,10 @@ function ResultsPage() {
 		: completedNames.filter((name) => name.vote == Vote.Yea);
 
 	return (
-		<div>
-			<ul>
-				{filteredNames.map((name) => (
-					<ResultRow key={name.id} babyName={name} />
-				))}
-			</ul>
+		<div className={styles.root}>
+			{filteredNames.map((name) => (
+				<ResultRow key={name.id} babyName={name} />
+			))}
 		</div>
 	);
 }

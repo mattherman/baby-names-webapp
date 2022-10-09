@@ -1,11 +1,7 @@
-.container {
-	width: 75%;
-	height: 100vh;
+.root {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	margin: auto;
-	text-align: center;
 }
 
 .buttons {
@@ -17,7 +13,6 @@
 
 .buttons button {
 	flex-grow: 1;
-	height: 3rem;
 }
 
 .yea {
@@ -26,4 +21,8 @@
 
 .nay {
 	/* background-color: red; */
+}
+
+.done {
+	font-size: 3rem;
 }

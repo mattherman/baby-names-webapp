@@ -5,6 +5,8 @@ import { NameGender, Vote } from '~/models';
 import { useAppDispatch, useAppSelector } from '~/redux';
 import { NameCard } from './NameCard';
 import styles from './VotingPage.css';
+import Button from '~/components/Button';
+import LoadingSpinner from '~/components/LoadingSpinner';
 
 export interface IVotingPageProps {
 	gender: NameGender;
@@ -22,11 +24,11 @@ function VotingPage({ gender }: IVotingPageProps) {
 	const { currentName, isLoading } = useAppSelector((state) => state.voting);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingSpinner />;
 	}
 
 	if (currentName === null) {
-		return <div>All done!</div>;
+		return <div className={styles.done}>All done!</div>;
 	}
 
 	const createVoteClickHandler = (vote: Vote) => () => {
@@ -34,25 +36,13 @@ function VotingPage({ gender }: IVotingPageProps) {
 	};
 
 	return (
-		<>
-			<div className={styles.container}>
-				<NameCard name={currentName} />
-				<div className={styles.buttons}>
-					<button
-						className={styles.nay}
-						onClick={createVoteClickHandler(Vote.Nay)}
-					>
-						No
-					</button>
-					<button
-						className={styles.yea}
-						onClick={createVoteClickHandler(Vote.Yea)}
-					>
-						Yes
-					</button>
-				</div>
+		<div className={styles.root}>
+			<NameCard name={currentName} />
+			<div className={styles.buttons}>
+				<Button onClick={createVoteClickHandler(Vote.Nay)}>No</Button>
+				<Button onClick={createVoteClickHandler(Vote.Yea)}>Yes</Button>
 			</div>
-		</>
+		</div>
 	);
 }
 

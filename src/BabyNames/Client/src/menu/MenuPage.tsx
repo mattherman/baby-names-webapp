@@ -1,19 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Button from '~/components/Button';
+import styles from './MenuPage.css';
 
 function MenuPage() {
+	const navigate = useNavigate();
 	return (
-		<ul>
-			<li>
-				<Link to="boy-names">Choose Boy Names</Link>
-			</li>
-			<li>
-				<Link to="girl-names">Choose Girl Names</Link>
-			</li>
-			<li>
-				<Link to="results">My Names</Link>
-			</li>
-		</ul>
+		<div className={styles.root}>
+			<Button onClick={() => navigate('boy-names')}>Choose Boy Names</Button>
+			<Button onClick={() => navigate('girl-names')}>Choose Girl Names</Button>
+			<Button onClick={() => navigate('results')}>Results</Button>
+		</div>
 	);
 }
 

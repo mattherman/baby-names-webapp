@@ -1,5 +1,5 @@
 import React from 'react';
-import { IBabyName } from '~/models';
+import { IBabyName, NameGender } from '~/models';
 import cx from 'classnames';
 import styles from './NameCard.css';
 
@@ -8,5 +8,6 @@ export interface INameCardProps {
 }
 
 export function NameCard({ name }: INameCardProps) {
-	return <div className={cx(styles.root, styles.blue)}>{name.name}</div>;
+	const colorStyle = name.gender == NameGender.Male ? styles.blue : styles.pink;
+	return <div className={cx(styles.root, colorStyle)}>{name.name}</div>;
 }

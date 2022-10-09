@@ -1,14 +1,19 @@
 .root {
 	border-radius: 5px;
-	height: 12rem;
+	height: 13rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 2rem;
+	font-size: 2.5rem;
 	margin: 20px 0px;
 }
 
 .blue {
 	background-color: #89cff0;
 	box-shadow: 5px 5px 5px rgb(0, 0, 255, 0.6);
+}
+
+.pink {
+	background-color: #f2acb9;
+	box-shadow: 5px 5px 5px rgb(255, 0, 0, 0.6);
 }

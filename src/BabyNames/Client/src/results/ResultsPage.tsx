@@ -33,11 +33,11 @@ function ResultsPage() {
 
 	return (
 		<div>
-			<li>
+			<ul>
 				{filteredNames.map((name) => (
 					<ResultRow key={name.id} babyName={name} />
 				))}
-			</li>
+			</ul>
 		</div>
 	);
 }

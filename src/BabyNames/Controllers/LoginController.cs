@@ -1,29 +1,40 @@
+using BabyNames.Configuration;
 using BabyNames.Data;
 using BabyNames.Models;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace BabyNames.Controllers;
 
 public class LoginController : Controller
 {
 	private readonly IUserRepository _userRepository;
+	private readonly string _googleClientId;
+	private readonly GoogleJsonWebSignature.ValidationSettings _validationSettings;
 
-	public LoginController(IUserRepository userRepository)
+	public LoginController(IUserRepository userRepository, IOptions<AuthenticationOptions> options)
 	{
-		_userRepository = userRepository;
+		_userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+		_googleClientId = options.Value.GoogleClientId ?? throw new ArgumentNullException(nameof(options));
+		_validationSettings = new GoogleJsonWebSignature.ValidationSettings
+		{
+			Audience = new [] { _googleClientId }
+		};
 	}
 
 	public IActionResult Prompt()
 	{
+		ViewData["ClientId"] = _googleClientId;
 		return View("Login");
 	}
 
 	[HttpPost]
 	public async Task<IActionResult> Complete([FromForm] GoogleAuthenticationResponse authenticationResponse)
 	{
-		// Use ValidationSettings with proper audience set
-		var validatedToken = await GoogleJsonWebSignature.ValidateAsync(authenticationResponse.Credential);
+		var validatedToken = await GoogleJsonWebSignature.ValidateAsync(
+			authenticationResponse.Credential,
+			_validationSettings);
 		if (validatedToken is null)
 			return Unauthorized();
 

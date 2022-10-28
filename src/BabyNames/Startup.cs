@@ -1,3 +1,4 @@
+using BabyNames.Configuration;
 using BabyNames.Data;
 using BabyNames.Data.Mappers;
 using Dapper;
@@ -23,6 +24,8 @@ public class Startup
 		services.AddSingleton<IUserRepository, UserRepository>();
 
 		SqlMapper.AddTypeHandler(new UriHandler());
+
+		services.AddOptions<AuthenticationOptions>().Bind(_configuration.GetSection("Authentication"));
 	}
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

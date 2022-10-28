@@ -4,7 +4,7 @@ namespace BabyNames;
 
 public class Startup
 {
-	private IConfiguration _configuration;
+	private readonly IConfiguration _configuration;
 
 	public Startup(IConfiguration configuration)
 	{
@@ -31,9 +31,10 @@ public class Startup
 
 		app.UseEndpoints(endpoints =>
 		{
+			endpoints.MapControllerRoute(
+				name: "default",
+				pattern: "{controller=Home}/{action=Index}");
 			endpoints.MapControllers();
-			// Handle 404 fallback
-			endpoints.MapFallbackToController("Index", "Home");
 		});
 	}
 }

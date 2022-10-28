@@ -6,7 +6,9 @@ CREATE TABLE IF NOT EXISTS BabyNames (
 
 CREATE TABLE IF NOT EXISTS Users (
     Id INTEGER PRIMARY KEY,
-    Username TEXT NOT NULL
+    EmailAddress TEXT NOT NULL,
+    FullName TEXT NOT NULL,
+    PictureUri TEXT NULL
 );
 
 CREATE TABLE IF NOT EXISTS UserVotes (

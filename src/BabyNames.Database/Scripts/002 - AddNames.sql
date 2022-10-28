@@ -5,5 +5,3 @@ INSERT INTO BabyNames (Name, Gender) VALUES
 ('Ashtyn', 'Female'),
 ('Adelaide', 'Female'),
 ('Sam', 'Female');
-
-INSERT INTO Users (Username) VALUES ('mattherman');

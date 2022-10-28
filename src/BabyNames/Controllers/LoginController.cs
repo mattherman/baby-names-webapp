@@ -22,22 +22,30 @@ public class LoginController : Controller
 	[HttpPost]
 	public async Task<IActionResult> Complete([FromForm] GoogleAuthenticationResponse authenticationResponse)
 	{
+		// Use ValidationSettings with proper audience set
 		var validatedToken = await GoogleJsonWebSignature.ValidateAsync(authenticationResponse.Credential);
 		if (validatedToken is null)
 			return Unauthorized();
 
-		var user = await _userRepository.GetUser(validatedToken.Email);
+		var user = await GetOrCreateUser(validatedToken);
 		if (user is null)
-		{
-			user = new User
-			{
-				Name = validatedToken.Name,
-				EmailAddress = validatedToken.Email,
-				PictureUri = new Uri(validatedToken.Picture)
-			};
-			await _userRepository.CreateUser(user);
-		}
+			return BadRequest();
+
 		// TODO: Generate app-specific JWT for future authorization
+
 		return RedirectToAction("Index", "Home");
+	}
+
+	private async Task<User?> GetOrCreateUser(GoogleJsonWebSignature.Payload token)
+	{
+		var user = await _userRepository.GetUser(token.Email);
+		if (user is not null)
+			return user;
+
+		await _userRepository.CreateUser(
+			token.Email,
+			token.Name,
+			new Uri(token.Picture));
+		return await _userRepository.GetUser(token.Email);
 	}
 }

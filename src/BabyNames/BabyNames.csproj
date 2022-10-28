@@ -21,6 +21,10 @@
     <EmbeddedResource Include="Data\Queries\GetBabyName.sql" />
     <None Remove="Data\Queries\CastVote.sql" />
     <EmbeddedResource Include="Data\Queries\CastVote.sql" />
+    <None Remove="Data\Queries\CreateUser.sql" />
+    <EmbeddedResource Include="Data\Queries\CreateUser.sql" />
+    <None Remove="Data\Queries\GetUser.sql" />
+    <EmbeddedResource Include="Data\Queries\GetUserByEmail.sql" />
   </ItemGroup>
 
 </Project>

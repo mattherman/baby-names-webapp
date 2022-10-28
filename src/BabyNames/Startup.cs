@@ -1,4 +1,6 @@
 using BabyNames.Data;
+using BabyNames.Data.Mappers;
+using Dapper;
 
 namespace BabyNames;
 
@@ -18,6 +20,9 @@ public class Startup
 		services.Configure<DatabaseOptions>(_configuration.GetSection("Database"));
 
 		services.AddSingleton<IBabyNameRepository, BabyNameRepository>();
+		services.AddSingleton<IUserRepository, UserRepository>();
+
+		SqlMapper.AddTypeHandler(new UriHandler());
 	}
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

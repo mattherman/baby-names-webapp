@@ -8,6 +8,17 @@ public class HomeController : Controller
 {
 	public IActionResult Index()
 	{
+		var tokenFromLogin = TempData["Token"];
+		if (tokenFromLogin is not null)
+		{
+			Response.Cookies.Append("__Host-id", (string)tokenFromLogin, new CookieOptions
+			{
+				Secure = true,
+				HttpOnly = true,
+				SameSite = SameSiteMode.Strict,
+				Path = "/"
+			});
+		}
 		return View();
 	}
 

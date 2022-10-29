@@ -1,31 +1,40 @@
+using System.IdentityModel.Tokens.Jwt;
 using BabyNames.Configuration;
 using BabyNames.Data;
 using BabyNames.Models;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BabyNames.Controllers;
 
 public class LoginController : Controller
 {
 	private readonly IUserRepository _userRepository;
-	private readonly AuthenticationOptions _authenticationOptions;
+	private readonly string _googleClientId;
+	private readonly string _jwtSecretKey;
 	private readonly GoogleJsonWebSignature.ValidationSettings _validationSettings;
 
 	public LoginController(IUserRepository userRepository, IOptions<AuthenticationOptions> options)
 	{
 		_userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-		_authenticationOptions = options.Value ?? throw new ArgumentNullException(nameof(options));
+		var authenticationOptions = options.Value;
+		if (authenticationOptions is null)
+			throw new ArgumentNullException(nameof(options));
+		_googleClientId = authenticationOptions.GoogleClientId ?? throw new ArgumentNullException(nameof(options));
+		_jwtSecretKey = authenticationOptions.SecretKey ?? throw new ArgumentNullException(nameof(options));
 		_validationSettings = new GoogleJsonWebSignature.ValidationSettings
 		{
-			Audience = new [] { _authenticationOptions.GoogleClientId }
+			Audience = new [] { _googleClientId }
 		};
 	}
 
+	private SymmetricSecurityKey JwtSigningKey => new(Convert.FromBase64String(_jwtSecretKey));
+
 	public IActionResult Prompt()
 	{
-		ViewData["ClientId"] = _authenticationOptions.GoogleClientId;
+		ViewData["ClientId"] = _googleClientId;
 		return View("Login");
 	}
 
@@ -42,8 +51,13 @@ public class LoginController : Controller
 		if (user is null)
 			return BadRequest();
 
-		// TODO: Generate app-specific JWT for future authorization
+		var tokenHandler = new JwtSecurityTokenHandler();
+		var signingCredentials = new SigningCredentials(JwtSigningKey, SecurityAlgorithms.HmacSha256Signature);
+		var tokenDescriptor = new SecurityTokenDescriptor { SigningCredentials = signingCredentials };
+		var token = tokenHandler.CreateToken(tokenDescriptor);
+		var tokenString = tokenHandler.WriteToken(token);
 
+		TempData["Token"] = tokenString;
 		return RedirectToAction("Index", "Home");
 	}
 

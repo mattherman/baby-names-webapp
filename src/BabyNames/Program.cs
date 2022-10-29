@@ -5,5 +5,9 @@ Host.CreateDefaultBuilder(args)
 	{
 		webBuilder.UseStartup<Startup>();
 	})
+	.ConfigureAppConfiguration((_, config) =>
+	{
+		config.AddJsonFile("appsettings.secrets.json");
+	})
 	.Build()
 	.Run();

@@ -19,13 +19,12 @@ public class Startup
 		services.AddMvc();
 
 		services.Configure<DatabaseOptions>(_configuration.GetSection("Database"));
+		services.Configure<AuthenticationOptions>(_configuration.GetSection("Authentication"));
 
 		services.AddSingleton<IBabyNameRepository, BabyNameRepository>();
 		services.AddSingleton<IUserRepository, UserRepository>();
 
 		SqlMapper.AddTypeHandler(new UriHandler());
-
-		services.AddOptions<AuthenticationOptions>().Bind(_configuration.GetSection("Authentication"));
 	}
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -34,7 +33,7 @@ public class Startup
 		app.UseStaticFiles();
 		app.UseRouting();
 		app.UseAuthorization();
-
+		
 		// Register an error handler
 
 		app.UseEndpoints(endpoints =>

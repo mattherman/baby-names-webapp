@@ -10,22 +10,22 @@ namespace BabyNames.Controllers;
 public class LoginController : Controller
 {
 	private readonly IUserRepository _userRepository;
-	private readonly string _googleClientId;
+	private readonly AuthenticationOptions _authenticationOptions;
 	private readonly GoogleJsonWebSignature.ValidationSettings _validationSettings;
 
 	public LoginController(IUserRepository userRepository, IOptions<AuthenticationOptions> options)
 	{
 		_userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-		_googleClientId = options.Value.GoogleClientId ?? throw new ArgumentNullException(nameof(options));
+		_authenticationOptions = options.Value ?? throw new ArgumentNullException(nameof(options));
 		_validationSettings = new GoogleJsonWebSignature.ValidationSettings
 		{
-			Audience = new [] { _googleClientId }
+			Audience = new [] { _authenticationOptions.GoogleClientId }
 		};
 	}
 
 	public IActionResult Prompt()
 	{
-		ViewData["ClientId"] = _googleClientId;
+		ViewData["ClientId"] = _authenticationOptions.GoogleClientId;
 		return View("Login");
 	}
 

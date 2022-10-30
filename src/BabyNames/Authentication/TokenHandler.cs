@@ -10,7 +10,7 @@ namespace BabyNames.Authentication;
 public interface ITokenHandler
 {
 	string CreateToken(User user);
-	TokenValidationResult ValidateToken(string tokenToValidate);
+	TokenValidationResult ValidateToken(string? tokenToValidate);
 }
 
 public class TokenHandler : ITokenHandler
@@ -43,12 +43,14 @@ public class TokenHandler : ITokenHandler
 		return tokenHandler.WriteToken(token);
 	}
 
-	public TokenValidationResult ValidateToken(string tokenToValidate)
+	public TokenValidationResult ValidateToken(string? tokenToValidate)
 	{
-		var tokenHandler = new JwtSecurityTokenHandler();
+		if (tokenToValidate is null)
+			return new TokenValidationResult { ErrorMessage = "Token is empty" };
 
 		try
 		{
+			var tokenHandler = new JwtSecurityTokenHandler();
 			tokenHandler.ValidateToken(tokenToValidate,
 				new TokenValidationParameters
 				{

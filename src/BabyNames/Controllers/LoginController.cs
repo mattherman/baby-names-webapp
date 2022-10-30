@@ -48,7 +48,7 @@ public class LoginController : Controller
 		if (user is null)
 			return BadRequest();
 
-		TempData["Token"] = _tokenHandler.CreateToken(user);
+		TempData[AuthConstants.LoginTokenKey] = _tokenHandler.CreateToken(user);
 		return RedirectToAction("Index", "Home");
 	}
 

@@ -8,10 +8,9 @@ namespace BabyNames.Controllers;
 public class HomeController : Controller
 {
 	private readonly ITokenHandler _tokenHandler;
-	private string? LoginToken => TempData["Token"]?.ToString();
-	private bool IsCompletingLogin => LoginToken != null;
-	private string? CookieToken => Request.Cookies[CookieKeys.TokenCookieKey];
-	private bool IsAlreadyLoggedIn => Request.Cookies.ContainsKey(CookieKeys.TokenCookieKey);
+	private string? CookieToken => Request.Cookies[AuthConstants.TokenCookieKey];
+	private string? LoginToken => TempData[AuthConstants.LoginTokenKey]?.ToString();
+	private bool IsLoggingIn => LoginToken != null;
 
 	public HomeController(ITokenHandler tokenHandler)
 	{
@@ -20,23 +19,25 @@ public class HomeController : Controller
 
 	public IActionResult Index()
 	{
-		if (IsCompletingLogin)
+		var token = IsLoggingIn ? LoginToken : CookieToken;
+
+		if (!_tokenHandler.ValidateToken(token).WasSuccessful)
 		{
-			Response.Cookies.Append(CookieKeys.TokenCookieKey, LoginToken!, new CookieOptions
+			return RedirectToAction("Prompt", "Login");
+		}
+
+		if (IsLoggingIn)
+		{
+			Response.Cookies.Append(AuthConstants.TokenCookieKey, token!, new CookieOptions
 			{
 				Secure = true,
 				HttpOnly = true,
 				SameSite = SameSiteMode.Strict
 			});
-			return View();
 		}
 
-		if (IsAlreadyLoggedIn && _tokenHandler.ValidateToken(CookieToken!).WasSuccessful)
-		{
-			return View();
-		}
+		return View();
 
-		return RedirectToAction("Prompt", "Login");
 	}
 
 	[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

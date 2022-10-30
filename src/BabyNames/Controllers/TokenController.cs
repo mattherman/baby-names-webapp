@@ -21,7 +21,7 @@ public class TokenController : ControllerBase
 	[HttpGet]
 	public IActionResult GetToken()
 	{
-		var token = Request.Cookies[CookieKeys.TokenCookieKey];
+		var token = Request.Cookies[AuthConstants.TokenCookieKey];
 		if (token is not null)
 		{
 			return Ok(new TokenResponse(token));
@@ -34,7 +34,7 @@ public class TokenController : ControllerBase
 	[Route("refresh")]
 	public async Task<IActionResult> RefreshToken()
 	{
-		var token = Request.Cookies[CookieKeys.TokenCookieKey];
+		var token = Request.Cookies[AuthConstants.TokenCookieKey];
 		if (token is null)
 			return Unauthorized("Token cookie was not present");
 

@@ -52,6 +52,14 @@ public class TokenController : ControllerBase
 			return Unauthorized("User does not exist");
 
 		var newToken = _tokenHandler.CreateToken(user);
+
+		Response.Cookies.Append(AuthConstants.TokenCookieKey, newToken, new CookieOptions
+		{
+			Secure = true,
+			HttpOnly = true,
+			SameSite = SameSiteMode.Strict
+		});
+
 		return Ok(new TokenResponse(newToken));
 	}
 }

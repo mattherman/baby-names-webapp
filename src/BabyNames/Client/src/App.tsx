@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from './redux';
 import ResultsPage from './results/ResultsPage';
 import sessionSlice from './session/session.slice';
 import VotingPage from './voting/VotingPage';
+import Hearbeat from './Heartbeat';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -28,6 +29,7 @@ function App() {
 
 	return (
 		<Layout>
+			<Hearbeat />
 			<BrowserRouter>
 				<Routes>
 					<Route index element={<MenuPage />} />

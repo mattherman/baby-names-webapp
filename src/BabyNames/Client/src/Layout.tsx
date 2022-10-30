@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Layout.css';
 
 interface ILayoutProps {
-	children: JSX.Element;
+	children: JSX.Element | JSX.Element[];
 }
 
 function Layout({ children }: ILayoutProps) {

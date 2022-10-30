@@ -1,6 +1,10 @@
+using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using BabyNames.Authentication;
 using BabyNames.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace BabyNames.Tests;
@@ -8,6 +12,7 @@ namespace BabyNames.Tests;
 public class IntegrationTests
 {
 	private readonly TestData _testData = new();
+	private const string UserName = "Matthew Herman";
 
 	private async Task SetupTestData()
 	{
@@ -16,7 +21,24 @@ public class IntegrationTests
 		await _testData.CreateBabyName("Hank", NameGender.Male);
 		await _testData.CreateBabyName("Ashtyn", NameGender.Female);
 		await _testData.CreateBabyName("Adelaide", NameGender.Female);
-		await _testData.CreateUser("mattherman");
+		await _testData.CreateUser(UserName);
+	}
+
+	private HttpClient CreateAuthenticatedClient<T>(WebApplicationFactory<T> factory) where T : class
+	{
+		var client = factory.CreateClient();
+
+		using var scope = factory.Services.CreateScope();
+		var tokenHandler = scope.ServiceProvider.GetRequiredService<ITokenHandler>();
+		var token = tokenHandler.CreateToken(_testData.Users[UserName]);
+		client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+		return client;
+	}
+
+	private static HttpClient CreateUnauthenticatedClient<T>(WebApplicationFactory<T> factory) where T : class
+	{
+		return factory.CreateClient();
 	}
 
 	private static async Task<BabyName[]> GetBabyNames(
@@ -47,7 +69,7 @@ public class IntegrationTests
 		await SetupTestData();
 
 		await using var factory = new WebApplicationFactory<Startup>();
-		var client = factory.CreateClient();
+		var client = CreateAuthenticatedClient(factory);
 
 		await CastVote(client, _testData.BabyNameIds["Matthew"], Vote.Yea);
 		await CastVote(client, _testData.BabyNameIds["Ashtyn"], Vote.Nay);
@@ -64,7 +86,7 @@ public class IntegrationTests
 		await SetupTestData();
 
 		await using var factory = new WebApplicationFactory<Startup>();
-		var client = factory.CreateClient();
+		var client = CreateAuthenticatedClient(factory);
 
 		await CastVote(client, _testData.BabyNameIds["Matthew"], Vote.Yea);
 		await CastVote(client, _testData.BabyNameIds["Ashtyn"], Vote.Nay);
@@ -83,7 +105,7 @@ public class IntegrationTests
 		await SetupTestData();
 
 		await using var factory = new WebApplicationFactory<Startup>();
-		var client = factory.CreateClient();
+		var client = CreateAuthenticatedClient(factory);
 
 		await CastVote(client, _testData.BabyNameIds["Matthew"], Vote.Yea);
 
@@ -100,7 +122,7 @@ public class IntegrationTests
 		await SetupTestData();
 
 		await using var factory = new WebApplicationFactory<Startup>();
-		var client = factory.CreateClient();
+		var client = CreateAuthenticatedClient(factory);
 
 		await CastVote(client, _testData.BabyNameIds["Matthew"], Vote.Yea);
 
@@ -117,7 +139,7 @@ public class IntegrationTests
 		await SetupTestData();
 
 		await using var factory = new WebApplicationFactory<Startup>();
-		var client = factory.CreateClient();
+		var client = CreateAuthenticatedClient(factory);
 
 		await CastVote(client, _testData.BabyNameIds["Ashtyn"], Vote.Yea);
 
@@ -133,7 +155,7 @@ public class IntegrationTests
 		await SetupTestData();
 
 		await using var factory = new WebApplicationFactory<Startup>();
-		var client = factory.CreateClient();
+		var client = CreateAuthenticatedClient(factory);
 
 		await CastVote(client, _testData.BabyNameIds["Ashtyn"], Vote.Yea);
 
@@ -150,7 +172,7 @@ public class IntegrationTests
 		await SetupTestData();
 
 		await using var factory = new WebApplicationFactory<Startup>();
-		var client = factory.CreateClient();
+		var client = CreateAuthenticatedClient(factory);
 
 		await CastVote(client, _testData.BabyNameIds["Matthew"], Vote.Yea);
 
@@ -165,11 +187,24 @@ public class IntegrationTests
 		await SetupTestData();
 
 		await using var factory = new WebApplicationFactory<Startup>();
-		var client = factory.CreateClient();
+		var client = CreateAuthenticatedClient(factory);
 
 		await CastVote(client, _testData.BabyNameIds["Matthew"], Vote.Nay);
 
 		var results = await GetBabyNames(client, true, NameGender.Male);
 		Assert.Equal(Vote.Nay, results.Single(name => name.Name == "Matthew").Vote);
+	}
+
+	[Fact]
+	[Trait("Category", "Integration")]
+	public async Task MissingToken_Unauthorized()
+	{
+		await SetupTestData();
+
+		await using var factory = new WebApplicationFactory<Startup>();
+		var client = CreateUnauthenticatedClient(factory);
+
+		var exception = await Assert.ThrowsAsync<HttpRequestException>(async () => await GetBabyNames(client));
+		Assert.Equal(HttpStatusCode.Unauthorized, exception.StatusCode);
 	}
 }

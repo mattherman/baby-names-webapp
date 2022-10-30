@@ -8,7 +8,7 @@ public class TestData
 {
 	private readonly string _connectionString;
 	public IDictionary<string, int> BabyNameIds = new Dictionary<string, int>();
-	public IDictionary<string, int> UserIds = new Dictionary<string, int>();
+	public IDictionary<string, User> Users = new Dictionary<string, User>();
 
 	public TestData()
 	{
@@ -26,7 +26,7 @@ public class TestData
 		await connection.ExecuteAsync("DELETE FROM Users;");
 		await connection.ExecuteAsync("DELETE FROM BabyNames;");
 		BabyNameIds = new Dictionary<string, int>();
-		UserIds = new Dictionary<string, int>();
+		Users = new Dictionary<string, User>();
 	}
 
 	public async Task<int> CreateBabyName(string name, NameGender gender)
@@ -43,17 +43,17 @@ public class TestData
 		return id;
 	}
 
-	public async Task<int> CreateUser(string username)
+	public async Task CreateUser(string name)
 	{
 		await using var connection = new SqliteConnection(_connectionString);
 		await connection.OpenAsync();
 		await connection.ExecuteAsync(
-			"INSERT INTO Users (Username) VALUES (@Username);",
-			new { Username = username });
+			"INSERT INTO Users (EmailAddress, FullName) VALUES (@Email, @Name);",
+			new { Email = "", Name = name });
 		var id = await connection.QuerySingleAsync<int>(
-			"SELECT Id FROM Users WHERE Username = @Username",
-			new { Username = username });
-		UserIds.Add(username, id);
-		return id;
+			"SELECT Id FROM Users WHERE FullName = @Name",
+			new { Name = name });
+		var user = new User { Id = id, FullName = name };
+		Users.Add(name, user);
 	}
 }

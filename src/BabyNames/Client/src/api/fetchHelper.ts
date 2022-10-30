@@ -5,6 +5,8 @@ function formatUri(endpoint: string, query?: any) {
 function checkStatus(response: Response, requestUri: string) {
 	if (response.status >= 200 && response.status < 300) {
 		return response;
+	} else if (response.status === 401) {
+		window.location.href = '/login/prompt';
 	} else {
 		throw new Error(`${response.status} ${response.statusText}: ${requestUri}`);
 	}

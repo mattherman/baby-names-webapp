@@ -19,13 +19,14 @@ interface IRequest {
 	body?: {};
 }
 
-export async function get<T>(request: IRequest) {
+export async function get<T>(token: string, request: IRequest) {
 	const { uri, method, query, body } = request;
 	const response = await fetch(formatUri(uri, query), {
 		method: method ?? 'GET',
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': body ? 'application/json' : undefined,
+			Authorization: token ? `Bearer ${token}` : undefined,
 		},
 		body: body ? JSON.stringify(body) : undefined,
 	});
@@ -33,12 +34,13 @@ export async function get<T>(request: IRequest) {
 	return (await response.json()) as T;
 }
 
-export async function send(request: IRequest) {
+export async function send(token: string, request: IRequest) {
 	const { uri, method, query, body } = request;
 	const response = await fetch(formatUri(uri, query), {
 		method: method ?? 'POST',
 		headers: {
 			'Content-Type': body ? 'application/json' : undefined,
+			Authorization: token ? `Bearer ${token}` : undefined,
 		},
 		body: body ? JSON.stringify(body) : undefined,
 	});

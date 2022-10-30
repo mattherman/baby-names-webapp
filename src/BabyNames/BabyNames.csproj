@@ -26,6 +26,8 @@
     <EmbeddedResource Include="Data\Queries\CreateUser.sql" />
     <None Remove="Data\Queries\GetUser.sql" />
     <EmbeddedResource Include="Data\Queries\GetUserByEmail.sql" />
+    <None Remove="Data\Queries\GetUserById.sql" />
+    <EmbeddedResource Include="Data\Queries\GetUserById.sql" />
   </ItemGroup>
 
 </Project>

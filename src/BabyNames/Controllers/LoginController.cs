@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using BabyNames.Authentication;
 using BabyNames.Configuration;
 using BabyNames.Data;
 using BabyNames.Models;
@@ -12,25 +13,23 @@ namespace BabyNames.Controllers;
 public class LoginController : Controller
 {
 	private readonly IUserRepository _userRepository;
+	private readonly ITokenHandler _tokenHandler;
 	private readonly string _googleClientId;
-	private readonly string _jwtSecretKey;
 	private readonly GoogleJsonWebSignature.ValidationSettings _validationSettings;
 
-	public LoginController(IUserRepository userRepository, IOptions<AuthenticationOptions> options)
+	public LoginController(IUserRepository userRepository, ITokenHandler tokenHandler, IOptions<AuthenticationOptions> options)
 	{
 		_userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+		_tokenHandler = tokenHandler ?? throw new ArgumentNullException(nameof(tokenHandler));
 		var authenticationOptions = options.Value;
 		if (authenticationOptions is null)
 			throw new ArgumentNullException(nameof(options));
 		_googleClientId = authenticationOptions.GoogleClientId ?? throw new ArgumentNullException(nameof(options));
-		_jwtSecretKey = authenticationOptions.SecretKey ?? throw new ArgumentNullException(nameof(options));
 		_validationSettings = new GoogleJsonWebSignature.ValidationSettings
 		{
 			Audience = new [] { _googleClientId }
 		};
 	}
-
-	private SymmetricSecurityKey JwtSigningKey => new(Convert.FromBase64String(_jwtSecretKey));
 
 	public IActionResult Prompt()
 	{
@@ -51,19 +50,13 @@ public class LoginController : Controller
 		if (user is null)
 			return BadRequest();
 
-		var tokenHandler = new JwtSecurityTokenHandler();
-		var signingCredentials = new SigningCredentials(JwtSigningKey, SecurityAlgorithms.HmacSha256Signature);
-		var tokenDescriptor = new SecurityTokenDescriptor { SigningCredentials = signingCredentials };
-		var token = tokenHandler.CreateToken(tokenDescriptor);
-		var tokenString = tokenHandler.WriteToken(token);
-
-		TempData["Token"] = tokenString;
+		TempData["Token"] = _tokenHandler.CreateToken(user);
 		return RedirectToAction("Index", "Home");
 	}
 
 	private async Task<User?> GetOrCreateUser(GoogleJsonWebSignature.Payload token)
 	{
-		var user = await _userRepository.GetUser(token.Email);
+		var user = await _userRepository.GetUserByEmail(token.Email);
 		if (user is not null)
 			return user;
 
@@ -71,6 +64,6 @@ public class LoginController : Controller
 			token.Email,
 			token.Name,
 			new Uri(token.Picture));
-		return await _userRepository.GetUser(token.Email);
+		return await _userRepository.GetUserByEmail(token.Email);
 	}
 }

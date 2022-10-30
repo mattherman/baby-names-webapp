@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using BabyNames.Authentication;
 using BabyNames.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,20 +7,37 @@ namespace BabyNames.Controllers;
 
 public class HomeController : Controller
 {
+	private readonly ITokenHandler _tokenHandler;
+	private string? LoginToken => TempData["Token"]?.ToString();
+	private bool IsCompletingLogin => LoginToken != null;
+	private string? CookieToken => Request.Cookies[CookieKeys.TokenCookieKey];
+	private bool IsAlreadyLoggedIn => Request.Cookies.ContainsKey(CookieKeys.TokenCookieKey);
+
+	public HomeController(ITokenHandler tokenHandler)
+	{
+		_tokenHandler = tokenHandler ?? throw new ArgumentNullException(nameof(tokenHandler));
+	}
+
 	public IActionResult Index()
 	{
-		var tokenFromLogin = TempData["Token"];
-		if (tokenFromLogin is not null)
+		if (IsCompletingLogin)
 		{
-			Response.Cookies.Append("__Host-id", (string)tokenFromLogin, new CookieOptions
+			Response.Cookies.Append(CookieKeys.TokenCookieKey, LoginToken!, new CookieOptions
 			{
 				Secure = true,
 				HttpOnly = true,
 				SameSite = SameSiteMode.Strict,
-				Path = "/"
+				Path = ""
 			});
+			return View();
 		}
-		return View();
+
+		if (IsAlreadyLoggedIn && _tokenHandler.ValidateToken(CookieToken!).WasSuccessful)
+		{
+			return View();
+		}
+
+		return RedirectToAction("Prompt", "Login");
 	}
 
 	[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

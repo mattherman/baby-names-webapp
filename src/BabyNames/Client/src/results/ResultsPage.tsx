@@ -14,16 +14,17 @@ function ResultsPage() {
 		dispatch
 	);
 
-	const [genderFilter] = useState<NameGender>(null);
+	const [gender] = useState<NameGender>(null);
 	const [showRejectedNames] = useState<boolean>(false);
 
 	useEffect(() => {
-		getCompletedBabyNames(genderFilter);
-	}, [genderFilter]);
+		getCompletedBabyNames({ gender });
+	}, [gender]);
 
-	const { completedNames, isLoading } = useAppSelector(
-		(state) => state.results
+	const completedNames = useAppSelector(
+		(state) => state.results.completedNames
 	);
+	const isLoading = useAppSelector((state) => state.results.isLoading);
 
 	if (isLoading) {
 		return <LoadingSpinner />;

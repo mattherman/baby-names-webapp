@@ -15,7 +15,15 @@ export interface IBabyName {
 	vote: Vote;
 }
 
+export interface BabyNamesRequest {
+	gender?: NameGender;
+}
+
 export interface VoteRequest {
 	id: number;
 	vote: Vote;
+}
+
+export interface TokenResponse {
+	token: string;
 }

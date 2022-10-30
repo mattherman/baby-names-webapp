@@ -1,11 +1,13 @@
 using BabyNames.Data;
 using BabyNames.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BabyNames.Controllers;
 
 [ApiController]
 [Route("/api/baby-names")]
+[Authorize]
 public class BabyNamesController : ControllerBase
 {
 	private readonly IBabyNameRepository _repository;

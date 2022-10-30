@@ -8,6 +8,7 @@ public static class Query
 	public static readonly string GetBabyNamesByUserPendingVote = GetEmbeddedString("GetBabyNamesByUserPendingVote.sql");
 	public static readonly string GetBabyName = GetEmbeddedString("GetBabyName.sql");
 	public static readonly string CastVote = GetEmbeddedString("CastVote.sql");
+	public static readonly string GetUserById = GetEmbeddedString("GetUserById.sql");
 	public static readonly string GetUserByEmail = GetEmbeddedString("GetUserByEmail.sql");
 	public static readonly string CreateUser = GetEmbeddedString("CreateUser.sql");
 

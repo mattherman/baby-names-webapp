@@ -8,7 +8,8 @@ namespace BabyNames.Data;
 
 public interface IUserRepository
 {
-	Task<User?> GetUser(string emailAddress);
+	Task<User?> GetUser(int id);
+	Task<User?> GetUserByEmail(string emailAddress);
 	Task CreateUser(string emailAddress, string fullName, Uri pictureUri);
 }
 
@@ -21,7 +22,16 @@ public class UserRepository : IUserRepository
 		_connectionString = $"Data Source={databaseOptions.Value.DatabaseFile};";
 	}
 
-	public async Task<User?> GetUser(string emailAddress)
+	public async Task<User?> GetUser(int id)
+	{
+		await using var connection = new SqliteConnection(_connectionString);
+		await connection.OpenAsync();
+		return await connection.QueryFirstOrDefaultAsync<User>(
+			Query.GetUserById,
+			new { Id = id });
+	}
+
+	public async Task<User?> GetUserByEmail(string emailAddress)
 	{
 		await using var connection = new SqliteConnection(_connectionString);
 		await connection.OpenAsync();

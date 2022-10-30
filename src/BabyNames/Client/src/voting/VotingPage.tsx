@@ -19,9 +19,11 @@ function VotingPage({ gender }: IVotingPageProps) {
 		dispatch
 	);
 	useEffect(() => {
-		getRemainingBabyNames(gender);
+		getRemainingBabyNames({ gender });
 	}, []);
-	const { currentName, isLoading } = useAppSelector((state) => state.voting);
+
+	const currentName = useAppSelector((state) => state.voting.currentName);
+	const isLoading = useAppSelector((state) => state.voting.isLoading);
 
 	if (isLoading) {
 		return <LoadingSpinner />;

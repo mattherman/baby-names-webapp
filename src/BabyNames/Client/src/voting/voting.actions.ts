@@ -1,17 +1,24 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as babyNamesApi from '~/api/babyNames';
-import { NameGender, VoteRequest } from '~/models';
+import { BabyNamesRequest, VoteRequest } from '~/models';
+import { IState } from '~/redux';
 
 export const getRemainingBabyNames = createAsyncThunk(
 	'getRemainingBabyNames',
-	async (gender?: NameGender) => {
-		return await babyNamesApi.getBabyNames(gender);
+	async (babyNamesRequest: BabyNamesRequest, { getState }) => {
+		const {
+			session: { token },
+		} = getState() as IState;
+		return await babyNamesApi.getBabyNames(token, babyNamesRequest.gender);
 	}
 );
 
 export const submitVote = createAsyncThunk(
 	'vote',
-	async (voteRequest: VoteRequest) => {
-		return await babyNamesApi.submitVote(voteRequest);
+	async (voteRequest: VoteRequest, { getState }) => {
+		const {
+			session: { token },
+		} = getState() as IState;
+		return await babyNamesApi.submitVote(token, voteRequest);
 	}
 );

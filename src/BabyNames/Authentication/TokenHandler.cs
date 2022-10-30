@@ -12,6 +12,7 @@ public interface ITokenHandler
 	string CreateToken(User user);
 	TokenValidationResult ValidateToken(string tokenToValidate);
 }
+
 public class TokenHandler : ITokenHandler
 {
 	private readonly string _secretKey;

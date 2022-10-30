@@ -23,7 +23,7 @@ public class Startup
 		services.AddMvc();
 
 		services.Configure<DatabaseOptions>(_configuration.GetSection("Database"));
-		services.Configure<AuthenticationOptions>(_configuration.GetSection("Authentication"));
+		services.Configure<GoogleAuthOptions>(_configuration.GetSection("GoogleAuth"));
 		services.Configure<JwtOptions>(_configuration.GetSection("Jwt"));
 
 		services.AddSingleton<IBabyNameRepository, BabyNameRepository>();

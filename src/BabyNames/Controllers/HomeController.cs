@@ -26,8 +26,7 @@ public class HomeController : Controller
 			{
 				Secure = true,
 				HttpOnly = true,
-				SameSite = SameSiteMode.Strict,
-				Path = ""
+				SameSite = SameSiteMode.Strict
 			});
 			return View();
 		}

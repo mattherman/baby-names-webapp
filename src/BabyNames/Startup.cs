@@ -2,6 +2,7 @@ using BabyNames.Authentication;
 using BabyNames.Configuration;
 using BabyNames.Data;
 using BabyNames.Data.Mappers;
+using BabyNames.Logic;
 using Dapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -29,6 +30,7 @@ public class Startup
 		services.AddSingleton<IBabyNameRepository, BabyNameRepository>();
 		services.AddSingleton<IUserRepository, UserRepository>();
 		services.AddSingleton<ITokenHandler, TokenHandler>();
+		services.AddSingleton<IComparisonHandler, ComparisonHandler>();
 
 		SqlMapper.AddTypeHandler(new UriHandler());
 

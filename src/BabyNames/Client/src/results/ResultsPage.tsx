@@ -34,6 +34,10 @@ function ResultsPage() {
 		? completedNames
 		: completedNames.filter((name) => name.vote == Vote.Yea);
 
+	if (filteredNames.length === 0) {
+		return <div className={styles.empty}>No results</div>;
+	}
+
 	return (
 		<div className={styles.root}>
 			{filteredNames.map((name) => (

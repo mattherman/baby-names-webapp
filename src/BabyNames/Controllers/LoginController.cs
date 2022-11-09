@@ -35,6 +35,21 @@ public class LoginController : Controller
 		return View("Login");
 	}
 
+	public IActionResult Logout()
+	{
+		if (Request.Cookies[AuthConstants.TokenCookieKey] is not null)
+		{
+			Response.Cookies.Delete(AuthConstants.TokenCookieKey, new CookieOptions
+			{
+				Secure = true,
+				HttpOnly = true,
+				SameSite = SameSiteMode.Strict
+			});
+		}
+
+		return RedirectToAction("Prompt");
+	}
+
 	[HttpPost]
 	public async Task<IActionResult> Complete([FromForm] GoogleAuthenticationResponse authenticationResponse)
 	{

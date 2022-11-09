@@ -10,6 +10,7 @@ import ResultsPage from './results/ResultsPage';
 import sessionSlice from './session/session.slice';
 import VotingPage from './voting/VotingPage';
 import Hearbeat from './Heartbeat';
+import NavigationBar from './components/NavigationBar';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -28,9 +29,10 @@ function App() {
 	}
 
 	return (
-		<Layout>
+		<BrowserRouter>
 			<Hearbeat />
-			<BrowserRouter>
+			<NavigationBar />
+			<Layout>
 				<Routes>
 					<Route index element={<MenuPage />} />
 					<Route
@@ -43,8 +45,8 @@ function App() {
 					/>
 					<Route path="results" element={<ResultsPage />} />
 				</Routes>
-			</BrowserRouter>
-		</Layout>
+			</Layout>
+		</BrowserRouter>
 	);
 }
 

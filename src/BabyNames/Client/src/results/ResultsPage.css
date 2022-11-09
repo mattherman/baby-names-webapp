@@ -3,3 +3,7 @@
 	flex-direction: column;
 	text-align: left;
 }
+
+.empty {
+	font-size: 3em;
+}

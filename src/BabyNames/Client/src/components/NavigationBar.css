@@ -1,0 +1,21 @@
+.root {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	background-color: lightcyan;
+	border-bottom: 1px solid lightblue;
+}
+
+.logout {
+	margin-left: auto;
+	margin-right: 20px;
+	font-size: 1.2rem;
+}
+
+.title {
+	margin: 5px 20px;
+	text-decoration: none;
+}

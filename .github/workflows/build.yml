@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - src/**
+      - .github/**
 
 jobs:
   build:
@@ -22,6 +23,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+      - name: Integration tests
+        run: |
+          dotnet build
+          chmod +x *.sh
+          ./run-database-migrations.sh
+          ./run-integration-tests.sh
       - name: Build client
         run: |
           pushd src/BabyNames/Client

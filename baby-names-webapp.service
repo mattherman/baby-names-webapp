@@ -1,6 +1,5 @@
-# This file should be placed in /etc/systemd/system/
-# After copying the file run `systemctl start baby-names-webapp.service
-# To view logs run `journalctl -fu baby-names-webapp.service
+# This file should be placed in /etc/systemd/system/.
+# See README.md or the link below for more information.
 # https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-7.0
 
 [Unit]

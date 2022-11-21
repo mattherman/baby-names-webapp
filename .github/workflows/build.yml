@@ -27,6 +27,7 @@ jobs:
         run: |
           dotnet build
           chmod +x *.sh
+          ./create-local-secret-key.sh
           ./run-database-migrations.sh
           ./run-integration-tests.sh
       - name: Build client

@@ -71,8 +71,8 @@ You should also setup the systemd service using the `baby-names-webapp.service` 
 To deploy the web application, run the following from the server:
 
 ```
-wget https://github.com/mattherman/baby-names-webapp/releases/latest/download/site.zip
-unzip site.zip -d /var/www/baby-names
+wget https://github.com/mattherman/baby-names-webapp/releases/latest/download/server.zip
+unzip server.zip -d /var/www/baby-names
 systemctl restart baby-names-webapp.service
 ```
 
@@ -80,7 +80,7 @@ To perform a database migration, run the following from the server:
 
 ```
 wget https://github.com/mattherman/baby-names-webapp/releases/latest/download/database.zip
-unzip site.zip -d ./database
+unzip database.zip -d ./database
 ./database/BabyNames.Database execute /var/www/baby-names/BabyNames.db
 ```
 

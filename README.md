@@ -51,23 +51,6 @@ To run the integration tests you can either run the `run-integration-tests.sh` s
 
 Includes Github Actions that will build the site and archive the result.
 
-To deploy the web application, run the following from the server:
-
-```
-wget https://github.com/mattherman/baby-names-webapp/releases/latest/download/site.zip
-unzip site.zip -d /var/www/baby-names
-```
-
-The Google client secret will need to be added to `/var/www/baby-names/appsettings.secrets.json`.
-
-To perform a database migration, run the following from the server:
-
-```
-wget https://github.com/mattherman/baby-names-webapp/releases/latest/download/database.zip
-unzip site.zip -d ./database
-./database/BabyNames.Database execute /var/www/baby-names/BabyNames.db
-```
-
 The following should be added to your Nginx server configuration to setup the reverse proxy:
 
 ```
@@ -84,3 +67,20 @@ location /baby-names {
 ```
 
 You should also setup the systemd service using the `baby-names-webapp.service` file. See the comments in that file for instructions.
+
+To deploy the web application, run the following from the server:
+
+```
+wget https://github.com/mattherman/baby-names-webapp/releases/latest/download/site.zip
+unzip site.zip -d /var/www/baby-names
+systemctl restart baby-names-webapp.service
+```
+
+To perform a database migration, run the following from the server:
+
+```
+wget https://github.com/mattherman/baby-names-webapp/releases/latest/download/database.zip
+unzip site.zip -d ./database
+./database/BabyNames.Database execute /var/www/baby-names/BabyNames.db
+```
+

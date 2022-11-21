@@ -17,6 +17,7 @@ SyslogIdentifier=baby-names-webapp
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DATABASE__DATABASEFILE=BabyNames.db
+Environment=JWT__SECRETKEY=TODO_ADD_SECRET_KEY
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
 
 [Install]

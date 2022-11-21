@@ -1,5 +1,10 @@
+import { pathBase } from '../settings';
+
 function formatUri(endpoint: string, query?: any) {
-	return query ? `${endpoint}?${new URLSearchParams(query)}` : endpoint;
+	const formattedEndpoint = `${pathBase}${endpoint}`;
+	return query
+		? `${formattedEndpoint}?${new URLSearchParams(query)}`
+		: formattedEndpoint;
 }
 
 function checkStatus(response: Response, requestUri: string) {

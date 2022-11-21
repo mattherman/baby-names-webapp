@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model BabyNames.Models.InitialData
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,7 +13,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
 	<script defer>
-		window.initialData = @Json.Serialize(ViewBag.InitialData);
+		window.initialData = @Json.Serialize(Model);
 	</script>
 	<script defer src="~/scripts/main.js"></script>
 </head>

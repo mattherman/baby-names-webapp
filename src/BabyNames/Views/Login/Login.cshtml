@@ -21,7 +21,7 @@
 	<div id="g_id_onload"
 		data-client_id="@ViewData["ClientId"]"
 		data-ux_mode="redirect"
-		data-login_uri="/login/complete">
+		data-login_uri="@Url.Action("Complete", "Login", null, Context.Request.Scheme)">
 	</div>
 	<div class="g_id_signin" data-type="standard"></div>
 </body>

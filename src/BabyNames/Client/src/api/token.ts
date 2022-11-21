@@ -8,7 +8,7 @@ export async function getToken() {
 }
 
 export async function refreshToken() {
-	await get<TokenResponse>(null, {
+	return await get<TokenResponse>(null, {
 		uri: '/api/token/refresh',
 		method: 'POST',
 	});

@@ -5,6 +5,7 @@ using BabyNames.Data.Mappers;
 using BabyNames.Logic;
 using Dapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using TokenHandler = BabyNames.Authentication.TokenHandler;
 
@@ -62,7 +63,15 @@ public class Startup
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 	{
-		app.UseHttpsRedirection();
+		if (!env.IsDevelopment())
+		{
+			app.UseHttpsRedirection();
+			app.UseForwardedHeaders(new ForwardedHeadersOptions
+			{
+				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+			});
+			app.UsePathBase("/baby-names");
+		}
 		app.UseStaticFiles();
 		app.UseAuthentication();
 		app.UseRouting();

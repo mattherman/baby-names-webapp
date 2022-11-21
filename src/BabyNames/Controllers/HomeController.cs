@@ -36,7 +36,9 @@ public class HomeController : Controller
 			});
 		}
 
-		return View();
+		var model = new InitialData { PathBase = Request.PathBase };
+
+		return View(model);
 
 	}
 

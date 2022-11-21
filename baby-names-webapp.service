@@ -1,0 +1,24 @@
+# This file should be placed in /etc/systemd/system/
+# After copying the file run `systemctl start baby-names-webapp.service
+# To view logs run `journalctl -fu baby-names-webapp.service
+# https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-7.0
+
+[Unit]
+Description=BabyNames ASP.NET Core Web Application
+
+[Service]
+WorkingDirectory=/var/www/baby-names
+ExecStart=/usr/bin/dotnet /var/www/baby-names/BabyNames.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=baby-names-webapp
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DATABASE__DATABASEFILE=BabyNames.db
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
+

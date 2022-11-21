@@ -11,6 +11,7 @@ import sessionSlice from './session/session.slice';
 import VotingPage from './voting/VotingPage';
 import Hearbeat from './Heartbeat';
 import NavigationBar from './components/NavigationBar';
+import { pathBase } from './settings';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -29,7 +30,7 @@ function App() {
 	}
 
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename={pathBase}>
 			<Hearbeat />
 			<NavigationBar />
 			<Layout>

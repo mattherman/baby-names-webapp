@@ -31,13 +31,17 @@ jobs:
           pushd src/BabyNames
           dotnet publish -c Release
           popd
-          zip -r server.zip src/BabyNames/bin/Release/net6.0/publish
+          pushd src/BabyNames/bin/Release/net6.0/publish
+          zip -r server.zip *
+          popd
       - name: Build database migration
         run: |
           pushd src/BabyNames.Database
           dotnet publish -c Release
           popd
-          zip -r database.zip src/BabyNames.Database/bin/Release/net6.0/publish
+          pushd src/BabyNames.Database/bin/Release/net6.0/publish
+          zip -r database.zip *
+          popd
       - name: Create release
         id: create_release
         uses: actions/create-release@v1

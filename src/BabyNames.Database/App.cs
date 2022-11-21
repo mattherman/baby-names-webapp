@@ -1,7 +1,6 @@
 using System.Reflection;
 using DbUp;
 using DbUp.Engine;
-using Microsoft.Extensions.Options;
 using Microsoft.Data.Sqlite;
 
 namespace BabyNames.Database;
@@ -10,18 +9,12 @@ public class App
 {
 	private const string Plan = "plan";
 	private const string Execute = "execute";
-	private readonly DatabaseOptions _options;
-
-	public App(IOptions<DatabaseOptions> options)
-	{
-		_options = options.Value ?? throw new ArgumentNullException(nameof(options));
-	}
 
 	public int Run(string[] args)
 	{
 		const string invalidArgumentsMessage =
-			"Database migration must be ran with an argument of either 'plan' or 'execute'";
-		if (args.Length == 0)
+			"Database migration must be ran with an argument of either 'plan' or 'execute' and a path to the database file";
+		if (args.Length != 2)
 		{
 			Console.WriteLine(invalidArgumentsMessage);
 			return -1;
@@ -31,27 +24,23 @@ public class App
 		var isExecute = args[0].Equals(Execute, StringComparison.Ordinal);
 		var validArgument = isPlan || isExecute;
 
-		if (args.Length > 1 || !validArgument)
+		if (!validArgument)
 		{
 			Console.WriteLine(invalidArgumentsMessage);
 			return -1;
 		}
 
-		if (_options.DatabaseFile is null)
-		{
-			Console.WriteLine("The DATABASE__DATABASEFILE environment variable must be specified.");
-			return -1;
-		}
+		var databaseFile = args[1];
 
-		Console.WriteLine($"Running migrations against {_options.DatabaseFile}");
-		if (!File.Exists(_options.DatabaseFile))
+		Console.WriteLine($"Running migrations against {databaseFile}");
+		if (!File.Exists(databaseFile))
 		{
 			Console.WriteLine("The specified database file does not exist and will be created");
 		}
 
 		var connectionStringBuilder = new SqliteConnectionStringBuilder
 		{
-			DataSource = _options.DatabaseFile, ForeignKeys = true
+			DataSource = databaseFile, ForeignKeys = true
 		};
 
 		var connectionString = connectionStringBuilder.ToString();
@@ -82,7 +71,7 @@ public class App
 			.Build();
 	}
 
-	private void PlanUpgrade(string connectionString)
+	private static void PlanUpgrade(string connectionString)
 	{
 		var engine = BuildUpgradeEngine(connectionString);
 		var scriptsThatWillRun = engine.GetScriptsToExecute();
@@ -90,7 +79,7 @@ public class App
 		Console.WriteLine($"The following scripts will be executed when the migration is ran in execute mode: {scriptNames}");
 	}
 
-	private bool RunUpgrade(string connectionString)
+	private static bool RunUpgrade(string connectionString)
 	{
 		var engine = BuildUpgradeEngine(connectionString);
 

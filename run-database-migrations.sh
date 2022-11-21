@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export DATABASE__DATABASEFILE=$(pwd)/BabyNames.db
+DatabaseFile=$(pwd)/BabyNames.db
 
 pushd src/BabyNames.Database > /dev/null
-dotnet run -- execute
+dotnet run -- execute $DatabaseFile
 popd > /dev/null

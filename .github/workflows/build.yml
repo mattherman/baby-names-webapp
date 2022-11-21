@@ -1,0 +1,70 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install build utilities
+        run: apk add zip
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.x
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Build client
+        run: |
+          pushd src/BabyNames/Client
+          yarn install
+          yarn run build
+          popd
+      - name: Build server
+        run: |
+          pushd src/BabyNames
+          dotnet publish -c Release
+          popd
+          zip -r server.zip src/BabyNames/bin/Release/net6.0/publish
+      - name: Build database migration
+        run: |
+          pushd src/BabyNames.Database
+          dotnet publish -c Release
+          popd
+          zip -r database.zip src/BabyNames.Database/bin/Release/net6.0/publish
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_id }}.${{ github.run_number }}
+          release_name: Release v${{ github.run_id }}.${{ github.run_number }}
+          draft: false
+          prerelease: false
+      - name: Upload server assets
+        id: upload-server-assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./server.zip
+          asset_name: server.zip
+          asset_content_type: application/zip
+      - name: Upload database migration assets
+        id: upload-database-migration-assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./database.zip
+          asset_name: database.zip
+          asset_content_type: application/zip

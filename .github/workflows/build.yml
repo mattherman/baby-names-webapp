@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install build utilities
-        run: apt-get install -y zip
+        run: sudo apt-get install -y zip
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:

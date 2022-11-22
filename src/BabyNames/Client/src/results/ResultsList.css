@@ -1,0 +1,28 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+}
+
+.empty {
+	font-size: 3em;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+
+	margin-bottom: 1rem;
+}
+
+.copy {
+	color: blue;
+	cursor: pointer;
+}
+
+.copy > svg {
+	padding-left: 10px;
+}

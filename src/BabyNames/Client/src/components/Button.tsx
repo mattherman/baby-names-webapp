@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styles from './Button.css';
 
 interface IButtonProps {
-	children: string;
+	children: string | ReactElement[];
 	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 

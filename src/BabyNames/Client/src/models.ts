@@ -27,3 +27,19 @@ export interface VoteRequest {
 export interface TokenResponse {
 	token: string;
 }
+
+export interface IUser {
+	id: number;
+	fullName: string;
+	emailAddress: string;
+	pictureUri: string;
+}
+
+export interface IComparisonRequest {
+	targetUserEmail: string;
+}
+
+export interface IComparisonResult {
+	comparedTo: IUser;
+	matches: IBabyName[];
+}

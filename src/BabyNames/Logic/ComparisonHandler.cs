@@ -5,7 +5,7 @@ namespace BabyNames.Logic;
 
 public interface IComparisonHandler
 {
-	Task<Result<IEnumerable<BabyName>, string>> Compare(int sourceUserId, int targetUserId);
+	Task<Result<ComparisonResult, string>> Compare(int sourceUserId, string targetUserEmail);
 }
 
 public class ComparisonHandler : IComparisonHandler
@@ -19,18 +19,19 @@ public class ComparisonHandler : IComparisonHandler
 		_babyNameRepository = babyNameRepository;
 	}
 
-	public async Task<Result<IEnumerable<BabyName>, string>> Compare(int sourceUserId, int targetUserId)
+	public async Task<Result<ComparisonResult, string>> Compare(int sourceUserId, string targetUserEmail)
 	{
 		var sourceUser = await _userRepository.GetUser(sourceUserId);
 		if (sourceUser is null)
-			return Result<IEnumerable<BabyName>, string>.Failure("Source user was not found");
-		var targetUser = await _userRepository.GetUser(targetUserId);
+			return Result<ComparisonResult, string>.Failure("Source user was not found");
+		var targetUser = await _userRepository.GetUserByEmail(targetUserEmail);
 		if (targetUser is null)
-			return Result<IEnumerable<BabyName>, string>.Failure("Target user was not found");
+			return Result<ComparisonResult, string>.Failure("Target user was not found");
 		var sourceUserNames = await GetChosenNames(sourceUserId);
-		var targetUserNames = await GetChosenNames(targetUserId);
+		var targetUserNames = await GetChosenNames(targetUser.Id);
 		var matches = sourceUserNames.Intersect(targetUserNames, new BabyNameComparerById());
-		return Result<IEnumerable<BabyName>, string>.Success(matches);
+		var result = new ComparisonResult(targetUser, matches);
+		return Result<ComparisonResult, string>.Success(result);
 	}
 
 	private async Task<IEnumerable<BabyName>> GetChosenNames(int userId) =>

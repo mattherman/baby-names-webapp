@@ -24,8 +24,8 @@ public class IntegrationTests
 		await _testData.CreateBabyName("Ashtyn", NameGender.Female);
 		await _testData.CreateBabyName("Adelaide", NameGender.Female);
 		await _testData.CreateBabyName("Alice", NameGender.Female);
-		await _testData.CreateUser(UserName);
-		await _testData.CreateUser(OtherUserName);
+		await _testData.CreateUser(UserName, "matt@fakeemail.com");
+		await _testData.CreateUser(OtherUserName, "ashtyn@fakeemail.com");
 	}
 
 	private static HttpClient CreateAuthenticatedClient<T>(WebApplicationFactory<T> factory, User user) where T : class
@@ -66,14 +66,13 @@ public class IntegrationTests
 		response.EnsureSuccessStatusCode();
 	}
 
-	private static async Task<BabyName[]> CompareUserVotes(HttpClient client, int targetUserId)
+	private static async Task<ComparisonResult?> CompareUserVotes(HttpClient client, string targetUserEmail)
 	{
 		const string uriString = "api/baby-names/commands/compare";
-		var request = new ComparisonRequest { TargetUserId = targetUserId };
+		var request = new ComparisonRequest { TargetUserEmail = targetUserEmail };
 		var response = await client.PostAsJsonAsync(uriString, request);
 		response.EnsureSuccessStatusCode();
-		var result = await response.Content.ReadFromJsonAsync<BabyName[]>();
-		return result ?? Array.Empty<BabyName>();
+		return await response.Content.ReadFromJsonAsync<ComparisonResult>();
 	}
 
 	[Fact]
@@ -251,9 +250,12 @@ public class IntegrationTests
 		await CastVote(otherUserClient, _testData.BabyNameIds["Ashtyn"], Vote.Yea);
 		await CastVote(otherUserClient, _testData.BabyNameIds["Adelaide"], Vote.Yea);
 
-		var results = await CompareUserVotes(userClient, _testData.Users[OtherUserName].Id);
+		var result = await CompareUserVotes(userClient, _testData.Users[OtherUserName].EmailAddress);
 
-		Assert.Single(results);
-		Assert.Equal("Hank", results[0].Name);
+		Assert.NotNull(result);
+		var matches = result!.Matches.ToList();
+		Assert.Equal(_testData.Users[OtherUserName].Id, result.ComparedTo.Id);
+		Assert.Single(matches);
+		Assert.Equal("Hank", matches[0].Name);
 	}
 }

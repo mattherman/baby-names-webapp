@@ -51,8 +51,10 @@ public class BabyNamesController : ControllerBase
 	{
 		if (request is null)
 			return BadRequest();
+		if (request.TargetUserEmail is null)
+			return BadRequest();
 
-		var comparisonResult = await _comparisonHandler.Compare(UserId, request.TargetUserId);
+		var comparisonResult = await _comparisonHandler.Compare(UserId, request.TargetUserEmail);
 		return comparisonResult switch
 		{
 			{ IsSuccess: true } => Ok(comparisonResult.Value),

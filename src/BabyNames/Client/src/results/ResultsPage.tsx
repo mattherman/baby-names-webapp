@@ -1,49 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import LoadingSpinner from '~/components/LoadingSpinner';
-import { NameGender, Vote } from '~/models';
+import { NameGender } from '~/models';
 import { useAppDispatch, useAppSelector } from '~/redux';
-import ResultRow from './ResultRow';
+import CompareResultsForm from './CompareResultsForm';
 import resultsSlice from './results.slice';
+import ResultsList from './ResultsList';
 import styles from './ResultsPage.css';
 
 function ResultsPage() {
 	const dispatch = useAppDispatch();
-	const { getCompletedBabyNames } = bindActionCreators(
+	const { getCompletedBabyNames, compareResults } = bindActionCreators(
 		resultsSlice.actions,
 		dispatch
 	);
 
 	const [gender] = useState<NameGender>(null);
-	const [showRejectedNames] = useState<boolean>(false);
 
 	useEffect(() => {
 		getCompletedBabyNames({ gender });
 	}, [gender]);
 
+	const isLoading = useAppSelector((state) => state.results.isLoading);
 	const completedNames = useAppSelector(
 		(state) => state.results.completedNames
 	);
-	const isLoading = useAppSelector((state) => state.results.isLoading);
+	const compareResult = useAppSelector((state) => state.results.compareResult);
 
 	if (isLoading) {
 		return <LoadingSpinner />;
 	}
 
-	const filteredNames = showRejectedNames
-		? completedNames
-		: completedNames.filter((name) => name.vote == Vote.Yea);
+	const compareToUser = (emailAddress: string) => {
+		compareResults({ targetUserEmail: emailAddress });
+	};
 
-	if (filteredNames.length === 0) {
-		return <div className={styles.empty}>No results</div>;
-	}
+	const results = compareResult ? compareResult.matches : completedNames;
+	const headerText = compareResult
+		? `${compareResult.comparedTo.fullName}'s Matches`
+		: 'My Results';
 
 	return (
-		<div className={styles.root}>
-			{filteredNames.map((name) => (
-				<ResultRow key={name.id} babyName={name} />
-			))}
-		</div>
+		<>
+			<CompareResultsForm onSubmit={compareToUser} />
+			<div className={styles.list}>
+				<ResultsList headerText={headerText} names={results} />
+			</div>
+		</>
 	);
 }
 

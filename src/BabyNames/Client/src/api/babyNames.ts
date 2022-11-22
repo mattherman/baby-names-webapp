@@ -1,5 +1,11 @@
 import { get, send } from './fetchHelper';
-import { IBabyName, NameGender, VoteRequest } from '~/models';
+import {
+	IBabyName,
+	IComparisonRequest,
+	IComparisonResult,
+	NameGender,
+	VoteRequest,
+} from '~/models';
 
 export async function getBabyNames(
 	token: string,
@@ -17,6 +23,17 @@ export async function getBabyNames(
 export async function submitVote(token: string, request: VoteRequest) {
 	await send(token, {
 		uri: '/api/baby-names/commands/vote',
+		body: request,
+	});
+}
+
+export async function compareResults(
+	token: string,
+	request: IComparisonRequest
+) {
+	return await get<IComparisonResult>(token, {
+		uri: '/api/baby-names/commands/compare',
+		method: 'POST',
 		body: request,
 	});
 }

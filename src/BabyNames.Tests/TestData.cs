@@ -43,17 +43,22 @@ public class TestData
 		return id;
 	}
 
-	public async Task CreateUser(string name)
+	public async Task CreateUser(string name, string emailAddress)
 	{
 		await using var connection = new SqliteConnection(_connectionString);
 		await connection.OpenAsync();
 		await connection.ExecuteAsync(
 			"INSERT INTO Users (EmailAddress, FullName) VALUES (@Email, @Name);",
-			new { Email = "", Name = name });
+			new { Email = emailAddress, Name = name });
 		var id = await connection.QuerySingleAsync<int>(
 			"SELECT Id FROM Users WHERE FullName = @Name",
 			new { Name = name });
-		var user = new User { Id = id, FullName = name };
+		var user = new User
+		{
+			Id = id,
+			EmailAddress = emailAddress,
+			FullName = name
+		};
 		Users.Add(name, user);
 	}
 }

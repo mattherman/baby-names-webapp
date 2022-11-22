@@ -2,5 +2,5 @@ namespace BabyNames.Models;
 
 public class ComparisonRequest
 {
-	public int TargetUserId { get; set; }
+	public string? TargetUserEmail { get; set; }
 }

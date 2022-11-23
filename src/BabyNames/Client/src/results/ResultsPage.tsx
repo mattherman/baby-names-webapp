@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import LoadingSpinner from '~/components/LoadingSpinner';
 import Layout from '~/Layout';
-import { NameGender } from '~/models';
+import { NameGender, Vote } from '~/models';
 import { useAppDispatch, useAppSelector } from '~/redux';
 import CompareResultsForm from './CompareResultsForm';
 import resultsSlice from './results.slice';
@@ -32,7 +32,9 @@ function ResultsPage() {
 		compareResults({ targetUserEmail: emailAddress });
 	};
 
-	const results = compareResult ? compareResult.matches : completedNames;
+	const results = compareResult
+		? compareResult.matches
+		: completedNames.filter((n) => n.vote === Vote.Yea);
 	const headerText = compareResult
 		? `${compareResult.comparedTo.fullName}'s Matches`
 		: 'My Results';

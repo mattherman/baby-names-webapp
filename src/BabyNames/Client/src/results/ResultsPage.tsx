@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import LoadingSpinner from '~/components/LoadingSpinner';
+import Layout from '~/Layout';
 import { NameGender } from '~/models';
 import { useAppDispatch, useAppSelector } from '~/redux';
 import CompareResultsForm from './CompareResultsForm';
@@ -41,12 +42,18 @@ function ResultsPage() {
 		: 'My Results';
 
 	return (
-		<>
-			<CompareResultsForm onSubmit={compareToUser} />
-			<div className={styles.list}>
-				<ResultsList headerText={headerText} names={results} />
-			</div>
-		</>
+		<Layout>
+			{isLoading ? (
+				<LoadingSpinner />
+			) : (
+				<>
+					<CompareResultsForm onSubmit={compareToUser} />
+					<div className={styles.list}>
+						<ResultsList headerText={headerText} names={results} />
+					</div>
+				</>
+			)}
+		</Layout>
 	);
 }
 

@@ -23,7 +23,7 @@ function App() {
 	const token = useAppSelector((state) => state.session.token);
 	if (!token) {
 		return (
-			<Layout>
+			<Layout centered>
 				<LoadingSpinner />
 			</Layout>
 		);
@@ -33,20 +33,18 @@ function App() {
 		<BrowserRouter basename={pathBase}>
 			<Hearbeat />
 			<NavigationBar />
-			<Layout>
-				<Routes>
-					<Route index element={<MenuPage />} />
-					<Route
-						path="boy-names"
-						element={<VotingPage gender={NameGender.Male} />}
-					/>
-					<Route
-						path="girl-names"
-						element={<VotingPage gender={NameGender.Female} />}
-					/>
-					<Route path="results" element={<ResultsPage />} />
-				</Routes>
-			</Layout>
+			<Routes>
+				<Route index element={<MenuPage />} />
+				<Route
+					path="boy-names"
+					element={<VotingPage gender={NameGender.Male} />}
+				/>
+				<Route
+					path="girl-names"
+					element={<VotingPage gender={NameGender.Female} />}
+				/>
+				<Route path="results" element={<ResultsPage />} />
+			</Routes>
 		</BrowserRouter>
 	);
 }

@@ -5,5 +5,11 @@
 	margin: auto;
 	display: flex;
 	flex-direction: column;
+}
+
+.centered {
 	justify-content: center;
+}
+.nonCentered {
+	padding-top: 6rem;
 }

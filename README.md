@@ -44,10 +44,13 @@ To run the integration tests you can either run the `run-integration-tests.sh` s
 - [x] Update API to be backed by a database
 - [x] Add Redux
 - [x] Create skeleton application with planned interactions
-- [ ] Style application
+- [x] Style application
+- [ ] Style login page
+- [ ] Add logout page
 - [ ] Add animations
 - [x] Add auth
 - [x] Deployment
+- [ ] Add names
 
 ## Deployment
 

@@ -28,10 +28,6 @@ function ResultsPage() {
 	);
 	const compareResult = useAppSelector((state) => state.results.compareResult);
 
-	if (isLoading) {
-		return <LoadingSpinner />;
-	}
-
 	const compareToUser = (emailAddress: string) => {
 		compareResults({ targetUserEmail: emailAddress });
 	};
@@ -41,18 +37,16 @@ function ResultsPage() {
 		? `${compareResult.comparedTo.fullName}'s Matches`
 		: 'My Results';
 
-	return (
+	return isLoading ? (
+		<Layout centered>
+			<LoadingSpinner />
+		</Layout>
+	) : (
 		<Layout>
-			{isLoading ? (
-				<LoadingSpinner />
-			) : (
-				<>
-					<CompareResultsForm onSubmit={compareToUser} />
-					<div className={styles.list}>
-						<ResultsList headerText={headerText} names={results} />
-					</div>
-				</>
-			)}
+			<CompareResultsForm onSubmit={compareToUser} />
+			<div className={styles.list}>
+				<ResultsList headerText={headerText} names={results} />
+			</div>
 		</Layout>
 	);
 }

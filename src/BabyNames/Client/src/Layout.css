@@ -1,6 +1,5 @@
 .container {
 	width: 75%;
-	height: 100vh;
 	text-align: center;
 	margin: auto;
 	display: flex;
@@ -8,6 +7,7 @@
 }
 
 .centered {
+	height: 100vh;
 	justify-content: center;
 }
 .nonCentered {

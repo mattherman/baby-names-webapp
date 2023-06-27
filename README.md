@@ -46,11 +46,11 @@ To run the integration tests you can either run the `run-integration-tests.sh` s
 - [x] Create skeleton application with planned interactions
 - [x] Style application
 - [ ] Style login page
-- [ ] Add logout page
+- [x] Add logout page
 - [ ] Add animations
 - [x] Add auth
 - [x] Deployment
-- [ ] Add names
+- [x] Add names
 
 ## Deployment
 
